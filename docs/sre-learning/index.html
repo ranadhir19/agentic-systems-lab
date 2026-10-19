@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SRE Learning — Agentic Systems Lab</title>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#111724; --panel2:#0e1420; --border:#22304a;
+  --text:#e8ebf2; --muted:#98a2b8; --faint:#6b7690;
+  --blue:#6ea8fe; --green:#7ee2a8; --amber:#f0b35e; --red:#f08787;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav.top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.brand{font-weight:700;font-size:17px;color:var(--text);letter-spacing:.2px}
+.brand span{color:var(--blue)}
+nav.top .links{margin-left:auto;display:flex;gap:20px;font-size:14px}
+nav.top .links a{color:var(--muted)}
+nav.top .links a:hover{color:var(--text)}
+.hero{padding:84px 0 60px;text-align:left;
+  background:radial-gradient(900px 380px at 20% 0%,rgba(110,168,254,.12),transparent 60%)}
+.hero .kicker{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:46px;line-height:1.12;margin:0 0 20px;letter-spacing:-.5px;max-width:820px}
+.hero p.sub{color:var(--muted);font-size:18px;max-width:720px;margin:0 0 34px}
+.btn{display:inline-block;background:var(--blue);color:#0b0e14;font-weight:700;
+  padding:12px 26px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.install{margin-top:34px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.install code{background:#0e1420;border:1px solid var(--border);border-radius:8px;
+  padding:10px 18px;font-size:15px;color:var(--green)}
+.install span{color:var(--muted);font-size:14px}
+.stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
+.stats div b{font-size:26px;display:block}
+.stats div span{color:var(--muted);font-size:13px}
+section{padding:56px 0}
+h2.sec{font-size:28px;margin:0 0 8px;letter-spacing:-.3px}
+p.lead{color:var(--muted);max-width:760px;margin:0 0 30px}
+.cat{border:1px solid var(--border);border-radius:var(--radius);padding:28px;
+  margin-bottom:28px;background:var(--panel)}
+.cat h3{margin:0 0 4px;font-size:21px}
+.cat h3 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}
+.cat p.desc{color:var(--muted);margin:0 0 20px;max-width:720px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.hero h1{font-size:34px}}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;
+  padding:22px;display:flex;flex-direction:column}
+.card h4{margin:0 0 6px;font-size:18px}
+.card h4 a{color:var(--text)}
+.card .tag{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14.5px;margin:0 0 16px;flex:1}
+.card .metric{font-size:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+.card .metric b{color:var(--green)}
+.proj-hero{padding:56px 0 30px}
+.proj-hero .kicker{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.proj-hero h1{font-size:38px;margin:0 0 10px;letter-spacing:-.4px}
+.proj-hero p.tagline{color:var(--muted);font-size:18px;margin:0 0 8px}
+.crumb{font-size:13px;color:var(--faint);margin-bottom:22px}
+.crumb a{color:var(--faint)}
+.block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;margin-bottom:22px}
+.block h2{font-size:20px;margin:0 0 12px}
+.block h2 .n{display:inline-block;width:28px;height:28px;border-radius:8px;background:var(--blue);
+  color:#0b0e14;font-size:15px;text-align:center;line-height:28px;margin-right:10px;font-weight:800}
+.block p{margin:0 0 12px;color:#c9d1e2}
+.block p:last-child{margin-bottom:0}
+.block ul{margin:8px 0 0;padding-left:20px;color:#c9d1e2}
+.block li{margin-bottom:8px}
+.diagram{background:#0d1320;border:1px solid var(--border);border-radius:12px;
+  padding:18px;overflow-x:auto;margin:6px 0 4px}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.caption{font-size:13px;color:var(--faint);text-align:center;margin-top:8px}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+table.res th,table.res td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+table.res th{background:var(--panel2);color:var(--muted);font-weight:600}
+.hl{color:var(--green);font-weight:700}
+img.chart{width:100%;border-radius:10px;border:1px solid var(--border);margin-top:10px}
+code.tree{background:#0d1320;border:1px solid var(--border);border-radius:10px;
+  display:block;padding:16px 18px;font-size:13.5px;color:#c9d1e2;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.pagenav{display:flex;justify-content:space-between;margin:40px 0 60px;gap:16px}
+.pagenav a{border:1px solid var(--border);border-radius:10px;padding:14px 20px;
+  color:var(--text);font-size:14px;background:var(--panel)}
+.pagenav a small{display:block;color:var(--faint);font-size:12px}
+footer{border-top:1px solid var(--border);padding:34px 0 48px;color:var(--faint);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style></head><body>
+<nav class="top"><div class="wrap">
+<a class="brand" href="../index.html">Agentic Systems <span>Lab</span></a>
+<div class="links"><a href="../index.html#orchestration">Orchestration</a><a href="../index.html#trust">Trust, Recovery</a><a href="../index.html#performance">Performance</a><a href="../index.html#operations">Reliability</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
+</div></nav>
+<div class="wrap"><div class="proj-hero">
+<div class="crumb"><a href="../index.html">Lab</a> / <a href="../index.html#operations">Reliability & Operations</a> / 14</div>
+<div class="kicker" style="color:#c792ea">Reliability & Operations</div>
+<h1>SRE Learning</h1>
+<p class="tagline">Train SRE agents on your incident history: your past outages are the training data for future prevention.</p>
+</div>
+<div class="block"><h2><span class="n">1</span>The problem</h2><p>SRE automation is built on theory: hand-written runbooks, static thresholds, generic playbooks. Meanwhile the organization sits on years of incident tickets, change records, and postmortems — the exact training data that would let agents learn <i>this</i> environment's failure modes — and uses none of it.</p></div>
+<div class="block"><h2><span class="n">2</span>The current gap</h2><p>No pipeline turns incident history into agent competence. Change→incident links are tribal knowledge; causal patterns live in postmortem PDFs; 'similar incident' means keyword search; resolution choices ignore what actually worked last time.</p></div>
+<div class="block"><h2><span class="n">3</span>How the solution addresses it</h2><p>A data-first pipeline (extract → enrich incidents with change context via temporal×service×topology correlation → per-agent datasets) training <b>four agents</b>: change-risk predictor (AUC 0.761 = Bayes ceiling, honest log-odds explanations), causal knowledge graph (top-3 path accuracy 0.99), learned similarity (P@1 1.00 vs TF-IDF 0.90), resolution recommender (0.89 vs 0.41 baseline) — coordinated by a confidence-routed workflow with a <b>continuous learning loop</b> (quality-gated retraining, active learning, learning-velocity metrics).</p></div>
+<div class="block"><h2><span class="n">4</span>Architecture</h2>
+<div class="diagram"><svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8fa2c8"/>
+  </marker>
+  <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#6ea8fe"/>
+  </marker>
+  <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#7ee2a8"/>
+  </marker>
+</defs>
+
+<rect x="20" y="130" width="130" height="60" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="85.0" y="158.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">incident history</text><text x="85.0" y="175.0" text-anchor="middle" fill="#98a2b8" font-size="11">792 incidents, 180d</text>
+<rect x="180" y="130" width="108" height="60" rx="9" fill="#1a2b1f" stroke="#3f7a52" stroke-width="1.5"/><text x="234.0" y="158.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">change risk</text><text x="234.0" y="175.0" text-anchor="middle" fill="#98a2b8" font-size="11">trained agent</text>
+<line x1="150" y1="160" x2="178" y2="160" stroke="#7ee2a8" stroke-width="1.6" marker-end="url(#arrg)"/>
+<rect x="298" y="130" width="108" height="60" rx="9" fill="#1a2b1f" stroke="#3f7a52" stroke-width="1.5"/><text x="352.0" y="158.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">causality</text><text x="352.0" y="175.0" text-anchor="middle" fill="#98a2b8" font-size="11">trained agent</text>
+<line x1="150" y1="160" x2="178" y2="160" stroke="#7ee2a8" stroke-width="1.6" marker-end="url(#arrg)"/>
+<rect x="416" y="130" width="108" height="60" rx="9" fill="#1a2b1f" stroke="#3f7a52" stroke-width="1.5"/><text x="470.0" y="158.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">similarity</text><text x="470.0" y="175.0" text-anchor="middle" fill="#98a2b8" font-size="11">trained agent</text>
+<line x1="150" y1="160" x2="178" y2="160" stroke="#7ee2a8" stroke-width="1.6" marker-end="url(#arrg)"/>
+<rect x="534" y="130" width="108" height="60" rx="9" fill="#1a2b1f" stroke="#3f7a52" stroke-width="1.5"/><text x="588.0" y="158.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">resolution</text><text x="588.0" y="175.0" text-anchor="middle" fill="#98a2b8" font-size="11">trained agent</text>
+<line x1="150" y1="160" x2="178" y2="160" stroke="#7ee2a8" stroke-width="1.6" marker-end="url(#arrg)"/>
+<rect x="180" y="230" width="460" height="54" rx="9" fill="#1b2340" stroke="#6ea8fe" stroke-width="1.5"/><text x="410.0" y="255.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">workflow: change -> causality/similarity -> resolution -> learn</text>
+<text x="330" y="312" text-anchor="middle" fill="#99a4ba" font-size="11">AUC 0.761 = Bayes ceiling; continuous learner climbs 0.58 -> 0.67 under drift</text></svg></div>
+<div class="caption">Blueprint of the SRE Learning architecture. See the repo for the full implementation.</div></div>
+<div class="block"><h2><span class="n">5</span>Results</h2>
+
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>change-risk prediction</td><td>AUC <b>0.761</b> (Bayes ceiling); recovers true weights (MAE 0.14)</td></tr>
+<tr><td>change→incident linking</td><td>top-1 0.73, top-3 <b>0.92</b></td></tr>
+<tr><td>resolution success</td><td><b>0.89</b> vs 0.41 most-frequent baseline</td></tr>
+<tr><td>learning under drift</td><td>frozen 0.58 → continuous <b>0.67</b> AUC; interventions 0.40 → 0.33</td></tr>
+<tr><td>active learning</td><td>100 uncertainty labels beat 200 random (~<b>2x</b> efficiency)</td></tr></table>
+<p>Seed 7; 2400 changes / 792 incidents / 180 days. Honest note: top-1 linking ties the recency baseline — the enrichment's value is the evidence-backed candidate set, not the argmax.</p>
+<img class="chart" src="../assets/charts/sre-learning.png" alt="SRE Learning experiment charts">
+<div class="caption">Generated by <code>experiments/run_experiments.py</code> — re-running reproduces these exactly.</div></div>
+<div class="block"><h2><span class="n">6</span>Insights</h2><ul><li><b>The ceiling is knowable.</b> Hitting the Bayes AUC proves the agent extracts everything the features contain — the next gain is better features, not a bigger model.</li><li><b>Learn the pipeline order.</b> Causal reasoning helps exactly when linking runs first — architecture order is a performance parameter.</li><li><b>Uncertainty is the labeling budget.</b> Active learning doubles label efficiency; random labels are the waste to cut.</li></ul></div>
+<div class="block"><h2><span class="n">7</span>Implementation</h2>
+<code class="tree">src/agentic_systems/sre_learning/
+  synth.py / pipeline.py  # seeded world + incident↔change enrichment
+  change_agent.py / causality.py / similarity.py / resolution.py
+  workflow.py / learning.py  # conditional workflow + continuous loop
+14-sre-learning/
+  experiments/run_experiments.py   # a-g, seed 7</code>
+<p style="margin-top:14px">Full source, tests, and experiment code: <a href="https://github.com">14-sre-learning/</a> ·
+Run: <code>cd 14-sre-learning && python3 experiments/run_experiments.py</code></p></div>
+<div class="pagenav">
+<a href="../ideology-mirror/index.html"><small>← Previous</small>13 · Ideology Mirror</a>
+<a href="../leadership-insights/index.html" style="text-align:right"><small>Next →</small>15 · Leadership Insights</a>
+</div></div>
+
+<footer><div class="wrap">
+<div>Agentic Systems Lab — sixteen original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Built by Ranadhir Ghosh · MIT License</div>
+</div></footer></body></html>

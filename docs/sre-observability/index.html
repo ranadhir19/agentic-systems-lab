@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SRE Observability — Agentic Systems Lab</title>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#111724; --panel2:#0e1420; --border:#22304a;
+  --text:#e8ebf2; --muted:#98a2b8; --faint:#6b7690;
+  --blue:#6ea8fe; --green:#7ee2a8; --amber:#f0b35e; --red:#f08787;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav.top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.brand{font-weight:700;font-size:17px;color:var(--text);letter-spacing:.2px}
+.brand span{color:var(--blue)}
+nav.top .links{margin-left:auto;display:flex;gap:20px;font-size:14px}
+nav.top .links a{color:var(--muted)}
+nav.top .links a:hover{color:var(--text)}
+.hero{padding:84px 0 60px;text-align:left;
+  background:radial-gradient(900px 380px at 20% 0%,rgba(110,168,254,.12),transparent 60%)}
+.hero .kicker{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:46px;line-height:1.12;margin:0 0 20px;letter-spacing:-.5px;max-width:820px}
+.hero p.sub{color:var(--muted);font-size:18px;max-width:720px;margin:0 0 34px}
+.btn{display:inline-block;background:var(--blue);color:#0b0e14;font-weight:700;
+  padding:12px 26px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.install{margin-top:34px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.install code{background:#0e1420;border:1px solid var(--border);border-radius:8px;
+  padding:10px 18px;font-size:15px;color:var(--green)}
+.install span{color:var(--muted);font-size:14px}
+.stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
+.stats div b{font-size:26px;display:block}
+.stats div span{color:var(--muted);font-size:13px}
+section{padding:56px 0}
+h2.sec{font-size:28px;margin:0 0 8px;letter-spacing:-.3px}
+p.lead{color:var(--muted);max-width:760px;margin:0 0 30px}
+.cat{border:1px solid var(--border);border-radius:var(--radius);padding:28px;
+  margin-bottom:28px;background:var(--panel)}
+.cat h3{margin:0 0 4px;font-size:21px}
+.cat h3 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}
+.cat p.desc{color:var(--muted);margin:0 0 20px;max-width:720px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.hero h1{font-size:34px}}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;
+  padding:22px;display:flex;flex-direction:column}
+.card h4{margin:0 0 6px;font-size:18px}
+.card h4 a{color:var(--text)}
+.card .tag{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14.5px;margin:0 0 16px;flex:1}
+.card .metric{font-size:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+.card .metric b{color:var(--green)}
+.proj-hero{padding:56px 0 30px}
+.proj-hero .kicker{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.proj-hero h1{font-size:38px;margin:0 0 10px;letter-spacing:-.4px}
+.proj-hero p.tagline{color:var(--muted);font-size:18px;margin:0 0 8px}
+.crumb{font-size:13px;color:var(--faint);margin-bottom:22px}
+.crumb a{color:var(--faint)}
+.block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;margin-bottom:22px}
+.block h2{font-size:20px;margin:0 0 12px}
+.block h2 .n{display:inline-block;width:28px;height:28px;border-radius:8px;background:var(--blue);
+  color:#0b0e14;font-size:15px;text-align:center;line-height:28px;margin-right:10px;font-weight:800}
+.block p{margin:0 0 12px;color:#c9d1e2}
+.block p:last-child{margin-bottom:0}
+.block ul{margin:8px 0 0;padding-left:20px;color:#c9d1e2}
+.block li{margin-bottom:8px}
+.diagram{background:#0d1320;border:1px solid var(--border);border-radius:12px;
+  padding:18px;overflow-x:auto;margin:6px 0 4px}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.caption{font-size:13px;color:var(--faint);text-align:center;margin-top:8px}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+table.res th,table.res td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+table.res th{background:var(--panel2);color:var(--muted);font-weight:600}
+.hl{color:var(--green);font-weight:700}
+img.chart{width:100%;border-radius:10px;border:1px solid var(--border);margin-top:10px}
+code.tree{background:#0d1320;border:1px solid var(--border);border-radius:10px;
+  display:block;padding:16px 18px;font-size:13.5px;color:#c9d1e2;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.pagenav{display:flex;justify-content:space-between;margin:40px 0 60px;gap:16px}
+.pagenav a{border:1px solid var(--border);border-radius:10px;padding:14px 20px;
+  color:var(--text);font-size:14px;background:var(--panel)}
+.pagenav a small{display:block;color:var(--faint);font-size:12px}
+footer{border-top:1px solid var(--border);padding:34px 0 48px;color:var(--faint);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style></head><body>
+<nav class="top"><div class="wrap">
+<a class="brand" href="../index.html">Agentic Systems <span>Lab</span></a>
+<div class="links"><a href="../index.html#orchestration">Orchestration</a><a href="../index.html#trust">Trust, Recovery</a><a href="../index.html#performance">Performance</a><a href="../index.html#operations">Reliability</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
+</div></nav>
+<div class="wrap"><div class="proj-hero">
+<div class="crumb"><a href="../index.html">Lab</a> / <a href="../index.html#operations">Reliability & Operations</a> / 10</div>
+<div class="kicker" style="color:#c792ea">Reliability & Operations</div>
+<h1>SRE Observability</h1>
+<p class="tagline">The boundary problem, measured: per-layer observers are blind at the seams — find the gaps, close them, fund reliability like a portfolio.</p>
+</div>
+<div class="block"><h2><span class="n">1</span>The problem</h2><p>Observability tools see their own layer well and the seams between layers badly. Infra-to-app and app-to-service boundaries are blind spots where cascading incidents go undetected — while SRE teams drown in per-layer alerts that never assemble into one incident context.</p></div>
+<div class="block"><h2><span class="n">2</span>The current gap</h2><p>Nobody scores observability <i>at the boundaries</i>. Teams buy more dashboards instead of measuring true positives, false negatives, and time-to-detect per layer <i>and</i> per intersection — so the weakest seam is never identified and never fixed.</p></div>
+<div class="block"><h2><span class="n">3</span>How the solution addresses it</h2><p>A MAS-based platform: per-layer observer agents with realistic capability profiles, a <b>boundary-assessment workflow</b> that ranks seams by observability gap (TP/TN/FN, time-to-detect), closed-loop targeted fixes, unified incident response, cross-layer context engineering — and a <b>strategy bridge</b> that treats reliability vs innovation as a portfolio optimization under a fixed budget.</p></div>
+<div class="block"><h2><span class="n">4</span>Architecture</h2>
+<div class="diagram"><svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8fa2c8"/>
+  </marker>
+  <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#6ea8fe"/>
+  </marker>
+  <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#7ee2a8"/>
+  </marker>
+</defs>
+
+<rect x="20" y="60" width="94" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="67.0" y="85.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">infra</text><text x="67.0" y="102.0" text-anchor="middle" fill="#98a2b8" font-size="11">observer</text>
+<line x1="114" y1="87" x2="124" y2="87" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="124" y="60" width="94" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="171.0" y="85.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">network</text><text x="171.0" y="102.0" text-anchor="middle" fill="#98a2b8" font-size="11">observer</text>
+<line x1="218" y1="87" x2="228" y2="87" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="228" y="60" width="94" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="275.0" y="85.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">platform</text><text x="275.0" y="102.0" text-anchor="middle" fill="#98a2b8" font-size="11">observer</text>
+<line x1="322" y1="87" x2="332" y2="87" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="332" y="60" width="94" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="379.0" y="85.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">app</text><text x="379.0" y="102.0" text-anchor="middle" fill="#98a2b8" font-size="11">observer</text>
+<line x1="426" y1="87" x2="436" y2="87" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="436" y="60" width="94" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="483.0" y="85.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">service</text><text x="483.0" y="102.0" text-anchor="middle" fill="#98a2b8" font-size="11">observer</text>
+<line x1="530" y1="87" x2="540" y2="87" stroke="#f08787" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="540" y="60" width="94" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="587.0" y="85.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">product</text><text x="587.0" y="102.0" text-anchor="middle" fill="#98a2b8" font-size="11">observer</text>
+<text x="330" y="140" text-anchor="middle" fill="#f08787" font-size="11">boundary blind spot: service-&gt;product recall 0.00</text>
+<rect x="180" y="170" width="300" height="56" rx="9" fill="#2a1620" stroke="#a04a5a" stroke-width="1.5"/><text x="330.0" y="196.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">boundary assessment</text><text x="330.0" y="213.0" text-anchor="middle" fill="#98a2b8" font-size="11">TP/TN/FN + time-to-detect per boundary</text>
+<rect x="180" y="250" width="140" height="54" rx="9" fill="#1a2b1f" stroke="#3f7a52" stroke-width="1.5"/><text x="250.0" y="275.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">unified response</text><text x="250.0" y="292.0" text-anchor="middle" fill="#98a2b8" font-size="11">100% runbook, 78m MTTR</text>
+<rect x="340" y="250" width="140" height="54" rx="9" fill="#1b2340" stroke="#6ea8fe" stroke-width="1.5"/><text x="410.0" y="275.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">strategy bridge</text><text x="410.0" y="292.0" text-anchor="middle" fill="#98a2b8" font-size="11">$100k: 320->80m downtime</text>
+<text x="330" y="326" text-anchor="middle" fill="#99a4ba" font-size="11">measure the gaps at layer intersections, then close them — and fund reliability like a portfolio</text></svg></div>
+<div class="caption">Blueprint of the SRE Observability architecture. See the repo for the full implementation.</div></div>
+<div class="block"><h2><span class="n">5</span>Results</h2>
+
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>boundary problem</td><td>intra-layer recall <b>0.91</b> vs boundary link recall <b>0.78</b>; service→product <b>0.00</b> (blind)</td></tr>
+<tr><td>closed loop</td><td>targeted fix at service→product: recall <b>0.00 → 1.00</b>, link time −3.0 min</td></tr>
+<tr><td>cascades (n=15)</td><td>siloed 73% runbook / 102 min MTTR vs unified <b>100% / 78 min</b></td></tr>
+<tr><td>strategy bridge ($100k)</td><td>downtime 320→80 min, cost $1.40M→$0.35M, ROI <b>1.00x → 2.26x</b></td></tr></table>
+<p>Seeds 0–4. Detection used trailing median/MAD (mean/std collapses under incident crowding — documented as an insight). The product-layer cascade symptom sits below the detection threshold by design: that is precisely why the boundary needs cross-layer visibility.</p>
+<img class="chart" src="../assets/charts/sre-observability.png" alt="SRE Observability experiment charts">
+<div class="caption">Generated by <code>experiments/run_experiments.py</code> — re-running reproduces these exactly.</div></div>
+<div class="block"><h2><span class="n">6</span>Insights</h2><ul><li><b>Measure the seams, not just the layers.</b> The weakest boundary (service→product, gap 1.00) was identifiable from telemetry alone.</li><li><b>Robust baselines matter.</b> Mean/std detection masks the incident right after another incident; median/MAD does not.</li><li><b>Reliability is a portfolio.</b> The $100k optimizer balances boundary modules, runbooks, and feature work on one efficient frontier.</li></ul></div>
+<div class="block"><h2><span class="n">7</span>Implementation</h2>
+<code class="tree">src/agentic_systems/sre_observability/
+  layers.py         # 6-layer telemetry simulator with cascading incidents
+  observers.py      # per-layer observer agents, median/MAD detection
+  boundary.py       # per-boundary TP/FN/F1, gap ranking
+  response.py       # unified vs siloed responders, runbooks, MTTR
+  strategy.py       # initiative portfolio optimizer + scorecard
+10-sre-observability/
+  experiments/run_experiments.py   # a-e: boundaries, closed loop, cascades, frontier (seeds 0-4)</code>
+<p style="margin-top:14px">Full source, tests, and experiment code: <a href="https://github.com">10-sre-observability/</a> ·
+Run: <code>cd 10-sre-observability && python3 experiments/run_experiments.py</code></p></div>
+<div class="pagenav">
+<a href="../decision-partition/index.html"><small>← Previous</small>09 · Decision Partition</a>
+<a href="../emergent-goals/index.html" style="text-align:right"><small>Next →</small>11 · Emergent Goals</a>
+</div></div>
+
+<footer><div class="wrap">
+<div>Agentic Systems Lab — sixteen original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Built by Ranadhir Ghosh · MIT License</div>
+</div></footer></body></html>

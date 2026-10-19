@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Risk Twin — Agentic Systems Lab</title>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#111724; --panel2:#0e1420; --border:#22304a;
+  --text:#e8ebf2; --muted:#98a2b8; --faint:#6b7690;
+  --blue:#6ea8fe; --green:#7ee2a8; --amber:#f0b35e; --red:#f08787;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav.top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.brand{font-weight:700;font-size:17px;color:var(--text);letter-spacing:.2px}
+.brand span{color:var(--blue)}
+nav.top .links{margin-left:auto;display:flex;gap:20px;font-size:14px}
+nav.top .links a{color:var(--muted)}
+nav.top .links a:hover{color:var(--text)}
+.hero{padding:84px 0 60px;text-align:left;
+  background:radial-gradient(900px 380px at 20% 0%,rgba(110,168,254,.12),transparent 60%)}
+.hero .kicker{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:46px;line-height:1.12;margin:0 0 20px;letter-spacing:-.5px;max-width:820px}
+.hero p.sub{color:var(--muted);font-size:18px;max-width:720px;margin:0 0 34px}
+.btn{display:inline-block;background:var(--blue);color:#0b0e14;font-weight:700;
+  padding:12px 26px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.install{margin-top:34px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.install code{background:#0e1420;border:1px solid var(--border);border-radius:8px;
+  padding:10px 18px;font-size:15px;color:var(--green)}
+.install span{color:var(--muted);font-size:14px}
+.stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
+.stats div b{font-size:26px;display:block}
+.stats div span{color:var(--muted);font-size:13px}
+section{padding:56px 0}
+h2.sec{font-size:28px;margin:0 0 8px;letter-spacing:-.3px}
+p.lead{color:var(--muted);max-width:760px;margin:0 0 30px}
+.cat{border:1px solid var(--border);border-radius:var(--radius);padding:28px;
+  margin-bottom:28px;background:var(--panel)}
+.cat h3{margin:0 0 4px;font-size:21px}
+.cat h3 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}
+.cat p.desc{color:var(--muted);margin:0 0 20px;max-width:720px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.hero h1{font-size:34px}}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;
+  padding:22px;display:flex;flex-direction:column}
+.card h4{margin:0 0 6px;font-size:18px}
+.card h4 a{color:var(--text)}
+.card .tag{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14.5px;margin:0 0 16px;flex:1}
+.card .metric{font-size:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+.card .metric b{color:var(--green)}
+.proj-hero{padding:56px 0 30px}
+.proj-hero .kicker{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.proj-hero h1{font-size:38px;margin:0 0 10px;letter-spacing:-.4px}
+.proj-hero p.tagline{color:var(--muted);font-size:18px;margin:0 0 8px}
+.crumb{font-size:13px;color:var(--faint);margin-bottom:22px}
+.crumb a{color:var(--faint)}
+.block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;margin-bottom:22px}
+.block h2{font-size:20px;margin:0 0 12px}
+.block h2 .n{display:inline-block;width:28px;height:28px;border-radius:8px;background:var(--blue);
+  color:#0b0e14;font-size:15px;text-align:center;line-height:28px;margin-right:10px;font-weight:800}
+.block p{margin:0 0 12px;color:#c9d1e2}
+.block p:last-child{margin-bottom:0}
+.block ul{margin:8px 0 0;padding-left:20px;color:#c9d1e2}
+.block li{margin-bottom:8px}
+.diagram{background:#0d1320;border:1px solid var(--border);border-radius:12px;
+  padding:18px;overflow-x:auto;margin:6px 0 4px}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.caption{font-size:13px;color:var(--faint);text-align:center;margin-top:8px}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+table.res th,table.res td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+table.res th{background:var(--panel2);color:var(--muted);font-weight:600}
+.hl{color:var(--green);font-weight:700}
+img.chart{width:100%;border-radius:10px;border:1px solid var(--border);margin-top:10px}
+code.tree{background:#0d1320;border:1px solid var(--border);border-radius:10px;
+  display:block;padding:16px 18px;font-size:13.5px;color:#c9d1e2;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.pagenav{display:flex;justify-content:space-between;margin:40px 0 60px;gap:16px}
+.pagenav a{border:1px solid var(--border);border-radius:10px;padding:14px 20px;
+  color:var(--text);font-size:14px;background:var(--panel)}
+.pagenav a small{display:block;color:var(--faint);font-size:12px}
+footer{border-top:1px solid var(--border);padding:34px 0 48px;color:var(--faint);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style></head><body>
+<nav class="top"><div class="wrap">
+<a class="brand" href="../index.html">Agentic Systems <span>Lab</span></a>
+<div class="links"><a href="../index.html#orchestration">Orchestration</a><a href="../index.html#trust">Trust, Recovery</a><a href="../index.html#performance">Performance</a><a href="../index.html#operations">Reliability</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
+</div></nav>
+<div class="wrap"><div class="proj-hero">
+<div class="crumb"><a href="../index.html">Lab</a> / <a href="../index.html#trust">Trust, Recovery & Evidence</a> / 12</div>
+<div class="kicker" style="color:#7ee2a8">Trust, Recovery & Evidence</div>
+<h1>AI Risk Twin</h1>
+<p class="tagline">Architecture-first, evidence-seeking AI risk pre-check: reconstruct the system from artifacts, then prove what's risky.</p>
+</div>
+<div class="block"><h2><span class="n">1</span>The problem</h2><p>AI risk assessment is a static questionnaire that asks developers to self-report risk. Developers assert 'the agent is read-only' while the architecture shows <tt>POST /holdTransaction</tt> — and nobody checks.</p></div>
+<div class="block"><h2><span class="n">2</span>The current gap</h2><p>Answer-seeking tools trust assertions. Nothing reconstructs the system from architecture diagrams, IaC, and MCP manifests; nothing cross-checks documentation against the graph; nothing distinguishes a finding backed by runtime telemetry from one backed by a checkbox.</p></div>
+<div class="block"><h2><span class="n">3</span>How the solution addresses it</h2><p>An evidence-seeking pipeline: ingest artifacts → build the <b>AI use-case twin</b> (components, flows, identities, trust boundaries) with three-level parsing that <b>never trusts the diagram</b> (edges resolve against IaC into real access paths) → 28-rule knowledge engine (OWASP Agentic/LLM, GDPR, EU AI Act, NIST AI RMF, internal policy) → <b>dynamic funnel</b> (125 questions → triggered → auto-answered → evidence-required → clarification) → evidence hierarchy L0–L5 → design vs information findings → readiness score → fix-and-rerun diff → drift detection.</p></div>
+<div class="block"><h2><span class="n">4</span>Architecture</h2>
+<div class="diagram"><svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8fa2c8"/>
+  </marker>
+  <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#6ea8fe"/>
+  </marker>
+  <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#7ee2a8"/>
+  </marker>
+</defs>
+
+<rect x="20" y="30" width="145" height="50" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="92.5" y="53.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">arch spec</text><text x="92.5" y="70.0" text-anchor="middle" fill="#98a2b8" font-size="11">evidence L0-L5</text>
+<line x1="92" y1="80" x2="330" y2="130" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="180" y="30" width="145" height="50" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="252.5" y="53.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">IaC</text><text x="252.5" y="70.0" text-anchor="middle" fill="#98a2b8" font-size="11">evidence L0-L5</text>
+<line x1="252" y1="80" x2="330" y2="130" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="340" y="30" width="145" height="50" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="412.5" y="53.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">MCP manifest</text><text x="412.5" y="70.0" text-anchor="middle" fill="#98a2b8" font-size="11">evidence L0-L5</text>
+<line x1="412" y1="80" x2="330" y2="130" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="500" y="30" width="145" height="50" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="572.5" y="53.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">doc claims</text><text x="572.5" y="70.0" text-anchor="middle" fill="#98a2b8" font-size="11">evidence L0-L5</text>
+<line x1="572" y1="80" x2="330" y2="130" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="230" y="130" width="200" height="56" rx="9" fill="#1b2340" stroke="#6ea8fe" stroke-width="1.5"/><text x="330.0" y="156.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">AI use-case twin</text><text x="330.0" y="173.0" text-anchor="middle" fill="#98a2b8" font-size="11">components · flows · identities</text>
+<rect x="230" y="215" width="200" height="56" rx="9" fill="#2a1620" stroke="#a04a5a" stroke-width="1.5"/><text x="330.0" y="241.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">28-rule engine</text><text x="330.0" y="258.0" text-anchor="middle" fill="#98a2b8" font-size="11">NIST · OWASP · EU AI Act · GDPR</text>
+<line x1="330" y1="186" x2="330" y2="213" stroke="#f08787" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="60" y="215" width="140" height="56" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="130.0" y="241.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">funnel</text><text x="130.0" y="258.0" text-anchor="middle" fill="#98a2b8" font-size="11">125 -> 53 questions</text>
+<rect x="460" y="215" width="140" height="56" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="530.0" y="241.0" text-anchor="middle" fill="#e8ebf2" font-size="11" font-weight="600">findings</text><text x="530.0" y="258.0" text-anchor="middle" fill="#98a2b8" font-size="11">29: 13 design, 16 info</text>
+<text x="330" y="300" text-anchor="middle" fill="#99a4ba" font-size="11">evidence-seeking, not answer-seeking — readiness 0.41: NOT READY for CISO submission</text></svg></div>
+<div class="caption">Blueprint of the AI Risk Twin architecture. See the repo for the full implementation.</div></div>
+<div class="block"><h2><span class="n">5</span>Results</h2>
+
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>worked example</td><td><b>2 inconsistencies</b>, 29 findings (13 design, 16 info), readiness <b>0.41 → NOT READY</b></td></tr>
+<tr><td>funnel (agentic platform)</td><td>125 → 121 → 9 → 59 → 53 questions</td></tr>
+<tr><td>fix-and-rerun</td><td><b>7 resolved</b>, 2 introduced (honestly reported), severity delta <b>−20</b></td></tr>
+<tr><td>drift</td><td>unapproved PII exfil edge → <b>1 critical alert</b>; approved edges → 0</td></tr></table>
+<p>Deterministic, byte-identical across reruns. Evidence sensitivity is honest: vendor evidence helps exactly where it applies (confidence 0.8082 → 0.8242), small elsewhere. Five criticals in the worked example: excessive agency, high-stakes action without human approval, PII → external LLM.</p>
+<img class="chart" src="../assets/charts/ai-risk-twin.png" alt="AI Risk Twin experiment charts">
+<div class="caption">Generated by <code>experiments/run_experiments.py</code> — re-running reproduces these exactly.</div></div>
+<div class="block"><h2><span class="n">6</span>Insights</h2><ul><li><b>Artifact wins on disagreement.</b> When docs say read-only and the graph shows a write edge, the graph is right.</li><li><b>Evidence has levels.</b> L1 user assertion carries a 0.90 uncertainty penalty; L4 enterprise-system evidence 0.05. Confidence is computed, not claimed.</li><li><b>Readiness is separate from risk.</b> 'Not ready for CISO submission' (3 blocking evidence items) is a different statement from 'risky' — and more actionable.</li></ul></div>
+<div class="block"><h2><span class="n">7</span>Implementation</h2>
+<code class="tree">src/agentic_systems/ai_risk_twin/
+  artifacts.py      # ingestors: arch spec, IaC, MCP manifests, doc claims
+  twin.py           # use-case twin + 3-level parser (never trusts diagram)
+  knowledge.py      # 28 rules + 125-question bank with triggers
+  funnel.py         # dynamic question funnel
+  findings.py       # design vs info findings, readiness scorer
+  rerun.py / drift.py  # fix-and-rerun diff, runtime drift alerts
+12-ai-risk-twin/
+  experiments/run_experiments.py   # deterministic end-to-end</code>
+<p style="margin-top:14px">Full source, tests, and experiment code: <a href="https://github.com">12-ai-risk-twin/</a> ·
+Run: <code>cd 12-ai-risk-twin && python3 experiments/run_experiments.py</code></p></div>
+<div class="pagenav">
+<a href="../emergent-goals/index.html"><small>← Previous</small>11 · Emergent Goals</a>
+<a href="../ideology-mirror/index.html" style="text-align:right"><small>Next →</small>13 · Ideology Mirror</a>
+</div></div>
+
+<footer><div class="wrap">
+<div>Agentic Systems Lab — sixteen original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Built by Ranadhir Ghosh · MIT License</div>
+</div></footer></body></html>

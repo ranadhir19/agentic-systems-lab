@@ -95,20 +95,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 </style></head><body>
 <nav class="top"><div class="wrap">
 <a class="brand" href="index.html">Agentic Systems <span>Lab</span></a>
-<div class="links"><a href="index.html#orchestration">Orchestration</a><a href="index.html#trust">Trust, Recovery</a><a href="index.html#performance">Performance</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
+<div class="links"><a href="index.html#orchestration">Orchestration</a><a href="index.html#trust">Trust, Recovery</a><a href="index.html#performance">Performance</a><a href="index.html#operations">Reliability</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
 </div></nav>
 <div class="hero"><div class="wrap">
 <div class="kicker">Portfolio · Agentic AI Systems</div>
-<h1>Seven systems for the hard problems in agentic AI.</h1>
+<h1>Sixteen systems for the hard problems in agentic AI.</h1>
 <p class="sub">Coordination, memory, reliability, and efficiency — each project is a
 complete, implemented answer to a research question, with architecture,
 seeded experiments, measured results, and honest conclusions. No demos.
 No hand-waving.</p>
 <a class="btn" href="#orchestration">Explore the systems</a>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
-<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — seven systems, one import.</span></div>
+<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — sixteen systems, one import.</span></div>
 <div class="stats">
-<div><b>7</b><span>implemented systems</span></div>
+<div><b>16</b><span>implemented systems</span></div>
 <div><b>3</b><span>categories</span></div>
 <div><b>20+</b><span>experiments, all seeded</span></div>
 <div><b>100%</b><span>reproducible — one command each</span></div>
@@ -133,7 +133,19 @@ Pick the layer you care about, then drill into any system.</p>
 <div class="card"><div class="tag">07 · Intent Inference</div>
 <h4><a href="intent-inference/index.html">Classification puts a label on words. Inference figures out what you want — goal, constraints, missing pieces — then plans.</a></h4>
 <p>Traditional chatbots treat language understanding as classification: utterance → one predefined intent label → dialogue manager → API call. This breaks on paraphrases wit…</p>
-<div class="metric"><b>100%</b> task success vs 45% classification baseline</div></div></div></div>
+<div class="metric"><b>100%</b> task success vs 45% classification baseline</div></div>
+<div class="card"><div class="tag">08 · Semantic Fabric</div>
+<h4><a href="semantic-fabric/index.html">Don't store data. Store meaning: an 8-layer semantic extraction pipeline that keeps cognition, not rows.</a></h4>
+<p>Data lakes store rows; RAG indexes store embeddings. Both keep the raw material and re-derive meaning on every query. Raw data is transient and expensive; what the organi…</p>
+<div class="metric"><b>27.2:1</b> compression — store meaning, not data</div></div>
+<div class="card"><div class="tag">09 · Decision Partition</div>
+<h4><a href="decision-partition/index.html">Score decision complexity, then cut the workflow into the fewest agents that respect it.</a></h4>
+<p>Multi-agent workflows are usually partitioned by gut feel: one agent per task (wasteful coordination overhead) or one agent for everything (cognitive overload, muddy acco…</p>
+<div class="metric"><b>4 agents</b> for 5 decisions, exact reproduction</div></div>
+<div class="card"><div class="tag">11 · Emergent Goals</div>
+<h4><a href="emergent-goals/index.html">Do communicating agents invent their own goals? A seeded test of intrinsic motivation, with the failures reported too.</a></h4>
+<p>The open question behind every 'autonomous agent' pitch: given agents with an assigned goal and continuous resource flow, will they evolve <i>additional</i> goals by them…</p>
+<div class="metric">49.5 vs 34.5 self-made goals — curiosity costs survival</div></div></div></div>
 <div class="cat" id="trust">
 <h3><span class="dot" style="background:#7ee2a8"></span>Trust, Recovery & Evidence</h3>
 <p class="desc">How agentic systems stay correct when things go wrong: proving what happened, healing workflows, and keeping recovery itself safe.</p>
@@ -145,7 +157,15 @@ Pick the layer you care about, then drill into any system.</p>
 <div class="card"><div class="tag">06 · HealFlow</div>
 <h4><a href="healflow/index.html">A model-agnostic, self-healing runtime for agentic workflows</a></h4>
 <p>Agentic workflows fail constantly: APIs go down, schemas drift, intermediate reasoning goes wrong, transactions half-complete. Retries and LLM replanning treat symptoms —…</p>
-<div class="metric"><b>6/6</b> safe outcomes · 0 side effects</div></div></div></div>
+<div class="metric"><b>6/6</b> safe outcomes · 0 side effects</div></div>
+<div class="card"><div class="tag">12 · AI Risk Twin</div>
+<h4><a href="ai-risk-twin/index.html">Architecture-first, evidence-seeking AI risk pre-check: reconstruct the system from artifacts, then prove what's risky.</a></h4>
+<p>AI risk assessment is a static questionnaire that asks developers to self-report risk. Developers assert 'the agent is read-only' while the architecture shows <tt>POST /h…</p>
+<div class="metric"><b>29 findings</b>, readiness 0.41 → NOT READY</div></div>
+<div class="card"><div class="tag">13 · Ideology Mirror</div>
+<h4><a href="ideology-mirror/index.html">LLMs reflect their creators' ideology. Measure the reflection: red-team the values, gate the drift, steer to your constitution.</a></h4>
+<p>Every aligned model ships its creator's values — RLHF/DPO inject annotator and corporate preferences, and the creator effect overrides pre-training data. Enterprises depl…</p>
+<div class="metric">creator divergence up to <b>1.546</b></div></div></div></div>
 <div class="cat" id="performance">
 <h3><span class="dot" style="background:#f0b35e"></span>Performance & Portability</h3>
 <p class="desc">How agentic systems run fast and run anywhere: serving efficiency under load, and skills that survive a change of model provider.</p>
@@ -158,6 +178,26 @@ Pick the layer you care about, then drill into any system.</p>
 <h4><a href="skillbridge-mcp/index.html">A model-agnostic framework for reusable AI skills</a></h4>
 <p>Skills, instructions, tools, and workflows are coupled to specific model providers, prompting conventions, and tool-calling interfaces — producing duplicated engineering …</p>
 <div class="metric"><b>2×</b> lower cross-model variance</div></div></div></div>
+<div class="cat" id="operations">
+<h3><span class="dot" style="background:#c792ea"></span>Reliability & Operations</h3>
+<p class="desc">How agentic systems keep production healthy and leadership informed: observability at the seams, learning from incidents, and intelligence for every role.</p>
+<div class="cards">
+<div class="card"><div class="tag">10 · SRE Observability</div>
+<h4><a href="sre-observability/index.html">The boundary problem, measured: per-layer observers are blind at the seams — find the gaps, close them, fund reliability like a portfolio.</a></h4>
+<p>Observability tools see their own layer well and the seams between layers badly. Infra-to-app and app-to-service boundaries are blind spots where cascading incidents go u…</p>
+<div class="metric">boundary recall <b>0.00 → 1.00</b> after targeted fix</div></div>
+<div class="card"><div class="tag">14 · SRE Learning</div>
+<h4><a href="sre-learning/index.html">Train SRE agents on your incident history: your past outages are the training data for future prevention.</a></h4>
+<p>SRE automation is built on theory: hand-written runbooks, static thresholds, generic playbooks. Meanwhile the organization sits on years of incident tickets, change recor…</p>
+<div class="metric">change-risk AUC <b>0.761</b> = Bayes ceiling</div></div>
+<div class="card"><div class="tag">15 · Leadership Insights</div>
+<h4><a href="leadership-insights/index.html">Join Jira, GitHub, ServiceNow, Workday, and Planview — and answer the questions no single system can.</a></h4>
+<p>Leadership decisions run on siloed dashboards: engineering sees tickets, finance sees licenses, HR sees attrition. The questions that matter — <i>is the review bottleneck…</p>
+<div class="metric"><b>$35,040/yr</b> waste found; 7 vs 1 insights</div></div>
+<div class="card"><div class="tag">16 · Enriched Observability</div>
+<h4><a href="enriched-observability/index.html">Raw → processed → analytic: a three-stage AI enrichment pipeline that turns 18 alerts into one causal chain.</a></h4>
+<p>Engineers triage raw telemetry: 18 alerts for one incident, each layer speaking its own dialect. Classical detectors flag; nobody translates. The CTO gets the same alert …</p>
+<div class="metric"><b>18.2 alerts → 5-item</b> causal chain</div></div></div></div>
 </div></section>
 <section><div class="wrap">
 <h2 class="sec">How to read a project</h2>
@@ -170,6 +210,6 @@ Pick the layer you care about, then drill into any system.</p>
 </div></div></section>
 
 <footer><div class="wrap">
-<div>Agentic Systems Lab — seven original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Agentic Systems Lab — sixteen original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
 <div>Built by Ranadhir Ghosh · MIT License</div>
 </div></footer></body></html>

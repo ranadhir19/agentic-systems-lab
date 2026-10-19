@@ -52,6 +52,15 @@ python3 examples/01_meridian_quickstart.py
 | Agents sharing beliefs without being lied to | `memory_fabric` | Epistemic defense: versioned claims, evidence-weighted quorum reconciliation, expiry, and revocation |
 | Workflows that break in production at 3am | `healflow` | Self-healing runtime design: contracts, checkpoints, causal diagnosis, smallest-viable repair, verified recovery |
 | Understanding what a user wants across paraphrases, multi-intent turns, and conversation history | `intent_inference` | Goal inference vs intent classification: emergent structured goals, ask-vs-act planning, memory-grounded context resolution |
+| Storing meaning instead of raw data | `semantic_fabric` | 8-layer semantic extraction: statistical, behavioral, temporal, causal, and intentional semantics with freshness monitoring |
+| Deciding how many agents a workflow needs | `decision_partition` | Complexity scoring and optimal partitioning: dedicated, shared, or grouped agents with dynamic re-scoring |
+| Finding observability blind spots between layers | `sre_observability` | Boundary-gap measurement, unified incident response, and reliability-vs-innovation portfolio optimization |
+| Testing whether agents invent their own goals | `emergent_goals` | Intrinsic motivation with pre-registered hypotheses: curiosity, empowerment, communication, and goal imagination |
+| Pre-checking AI architecture risk before CISO review | `ai_risk_twin` | Evidence-seeking assessment: use-case twin, rule engine, dynamic question funnel, L0–L5 evidence hierarchy |
+| Governing the values your AI models project | `ideology_mirror` | Ideological red-teaming, AI constitutions, vendor risk grades, and CI drift gates |
+| Training SRE agents on incident history | `sre_learning` | Change-risk, causality, similarity, and resolution agents with a continuous learning loop |
+| Answering cross-system leadership questions | `leadership_insights` | Entity resolution across five enterprise systems plus four leadership lenses |
+| Turning alert storms into causal chains | `enriched_observability` | Three-stage enrichment (raw → processed → analytic) with role-tailored views |
 
 ---
 
@@ -104,6 +113,96 @@ print(r.response)
 **When to use it.** Conversational agents where users paraphrase, combine
 requests, speak implicitly, or rely on context — and where asking a
 targeted question beats saying "I didn't understand".
+
+## 8. Semantic Fabric — store meaning, not data
+
+**The problem.** Data lakes keep rows; vector DBs keep embeddings. Both re-derive meaning on every query, and when raw logs age out, the distilled knowledge — behavior archetypes, causal chains, drift signatures — is lost with them.
+
+**The idea.** An 8-layer extraction pipeline (structural, statistical, behavioral, relational, temporal, causal, intent, abstract-cognitive) distills raw reality into versioned, content-hashed semantic artifacts. Raw data is discarded; a freshness monitor tracks per-layer drift; a reasoner answers retrieve/simulate/diagnose queries from the fabric alone.
+
+**Key result.** 10k transactions compress 27.2:1 into archetypes, impact edges, and causal edges (DAG precision 0.75, recall 1.00). 4/4 test queries agree with raw-data computation — reasoning without the raw rows. Stationary streams show 0.0 false-positive drift; a real behavior break is caught in one batch.
+
+**When to use it.** Organizational memory that must survive raw-data deletion, with measurable freshness instead of silent staleness.
+
+## 9. Decision Partition — how many agents does this workflow need?
+
+**The problem.** Agent teams are partitioned by gut feel: one agent per task (coordination overhead) or one agent for everything (overload, muddy accountability).
+
+**The idea.** Score complexity as |distinct state groups| × category weight (simple 1.0, composite 2.0). Assign: score ≥10 → dedicated agent; 5–9 → shared by domain; <5 → grouped. Re-score dynamically as evidence arrives; add latency/compute costs; plan sequential stages with critical-path accounting.
+
+**Key result.** The insurance-claim example reproduces the design exactly: scores (3, 10, 8, 10, 4) → 4 agents. At 50 decisions, 17.2 agents vs 50 naive (42–66% fewer). The composite weight is the high-leverage parameter — calibrate it deliberately.
+
+**When to use it.** Designing or auditing any multi-agent workflow where agent count and assignment need justification, not intuition.
+
+## 10. SRE Observability — measure the seams, then close them
+
+**The problem.** Per-layer observability is good; boundary observability is blind. Infra-to-app and app-to-service seams hide cascading incidents while each layer's dashboard stays green.
+
+**The idea.** Observer agents per layer with realistic capability profiles, plus a boundary-assessment workflow scoring TP/TN/FN and time-to-detect per intersection. Rank the gaps, apply targeted fixes, verify closed-loop. Unified response assembles one incident context; a strategy bridge optimizes reliability vs innovation spend as a portfolio.
+
+**Key result.** Intra-layer recall 0.91 vs boundary-link recall 0.78; the service→product seam scores 0.00 (blind) and goes to 1.00 after a targeted fix. Unified response: 100% correct runbooks, 78 min MTTR vs 73% / 102 min siloed. The $100k strategy portfolio moves downtime 320→80 min and ROI 1.00x→2.26x.
+
+**When to use it.** Any multi-layer production system where incidents cross seams — and any leadership conversation about reliability investment.
+
+## 11. Emergent Goals — do agents invent their own goals?
+
+**The problem.** "Autonomous agents" rhetoric claims self-directed behavior; falsifiable tests are rare. Does communication actually catalyze self-generated goals, and at what cost?
+
+**The idea.** A seeded grid world (metabolism, mortality, resource flow) with 10 agents: assigned collect-and-deposit goal plus curiosity, empowerment, and homeostatic drives, a learned 4-token broadcast channel, and event-driven goal imagination. Five hypotheses pre-registered; four ablations; 6 seeds × 1500 steps. Full literature survey in `11-emergent-goals/DESIGN.md`.
+
+**Key result.** Communication catalyzes goal invention (49.5 vs 34.5 goals, modest support) and 87% of imagined goals target communicated locations — but curiosity is metabolically costly (413 vs 1185 survival steps: hypothesis failed, reversed), communication *reduces* goal diversity (conformity), and self-made goals cannibalize the assigned objective (deposits 30.5 vs 124.5). Negative results reported as results.
+
+**When to use it.** Before claiming emergence in any agent system — and when designing remit guardrails for goal-generating agents.
+
+## 12. AI Risk Twin — architecture-first CISO pre-check
+
+**The problem.** AI risk assessment is a questionnaire. Developers assert "read-only" while the architecture shows `POST /holdTransaction` — and nothing checks.
+
+**The idea.** Evidence-seeking, not answer-seeking: ingest architecture/IaC/MCP artifacts, build the AI use-case twin (components, flows, identities, trust boundaries) with a parser that never trusts the diagram, run a 28-rule engine (OWASP Agentic/LLM, GDPR, EU AI Act, NIST AI RMF), funnel 125 questions down to the ones that matter, score evidence on an L0–L5 hierarchy, and emit design vs information findings plus a readiness verdict. Fix-and-rerun diffs the findings; drift detection watches runtime.
+
+**Key result.** Worked example: 2 inconsistencies, 29 findings (5 critical), readiness 0.41 → NOT READY. Adding a human-approval node resolves 7 findings (severity −20). An unapproved PII exfil edge raises exactly 1 critical drift alert.
+
+**When to use it.** Pre-deployment review of any AI system with agents, RAG, or external model calls — and anywhere "the diagram says X" needs verification.
+
+## 13. Ideology Mirror — govern the values your models project
+
+**The problem.** Aligned models ship their creators' ideology: RLHF/DPO inject annotator and corporate preferences, and the creator effect overrides pre-training data. Deploying base models as-is imports that worldview into your product, your global markets, and your compliance posture.
+
+**The idea.** A governance *measurement* framework: value profiles across 6 dimensions, a red-team probe battery (framing bias, refusal asymmetry, emphasis divergence), the creator-effect harness (same knowledge, different ideologies), AI constitutions with conformance scoring, vendor risk grades (A–F + contract clauses), and a worst-dimension drift gate for CI/CD. Simulated stand-ins — the methodology is the contribution; honest limits documented.
+
+**Key result.** Same knowledge, three ideologies: pairwise divergence up to 1.546. Refusal asymmetry 0.50 vs 0.17 — refusal is part of the ideology. Injected drift detected in 1 probe, CI fails. Constitution steering moves conformance to 1.000.
+
+**When to use it.** Procurement (vendor ideological risk assessment), global rollouts (localization alignment), and any pipeline where a vendor model update must not silently move your product's values.
+
+## 14. SRE Learning — train on your incident history
+
+**The problem.** SRE automation is built on theory while years of incident tickets, change records, and postmortems — the exact training data for *this* environment's failure modes — go unused.
+
+**The idea.** A data-first pipeline (extract → enrich incidents with change context → per-agent datasets) training four agents: change-risk predictor, causal knowledge graph, learned similarity, resolution recommender — routed by a confidence-based workflow with a continuous learning loop (quality-gated retraining, active learning, learning-velocity metrics).
+
+**Key result.** Change-risk AUC 0.761 = the Bayes ceiling (everything the features contain, extracted). Change→incident linking top-3 0.92. Resolution success 0.89 vs 0.41 baseline. Under concept drift, the continuous learner climbs 0.58 → 0.67 while the frozen model stalls. 100 uncertainty-sampled labels beat 200 random ones.
+
+**When to use it.** Any SRE org with 6+ months of incident history that wants apprentices, not just runbooks.
+
+## 15. Leadership Insights — the join is the insight
+
+**The problem.** Leadership runs on siloed dashboards. The questions that matter — is the review bottleneck raising failure rates? which licenses are waste? — need joins across Jira, GitHub, ServiceNow, Workday, and Planview that nobody performs.
+
+**The idea.** Entity resolution across five systems (F1 1.00) feeding four lenses — CTO (DORA, bottlenecks), CFO (license utilization, dollarized reclaims), Client (CSAT drivers, escalation prediction), HR (retention risk, skill gaps) — plus a cross-source insight engine where each insight declares its required sources, making the siloed-vs-integrated ablation exact.
+
+**Key result.** All four planted problems recovered (bottleneck with zero false positives, 20/20 license seats, retention recall 1.0). $35,040/yr waste found exactly. 7 insights joined vs 1 siloed. And the engine reports "no link found" when a plausible hypothesis fails (−23% lift) — it tests, not confirms.
+
+**When to use it.** Any leadership review where the real question spans systems — which is most of them.
+
+## 16. Enriched Observability — from alert storm to causal chain
+
+**The problem.** One incident, 18 alerts, five dialects. Pipelines stop at "processed" (scores, dashboards); the analytic stage — failure probability, root cause, business impact, recommended action, role-tailored narrative — is manual.
+
+**The idea.** A three-stage pipeline per layer: raw telemetry → processed (robust anomaly scores, breach forecasting, clustering) → analytic (failure probability, root-cause confidence, impact, actions) → cross-layer chain reconstruction → five role views (CTO, SRE director, DevOps lead, eng manager, engineer), each scored on a relevance rubric.
+
+**Key result.** Cascade link recall 1.00 with 0 spurious links; breach forecast MAE 3.4 min; 18.2 alerts collapse into a 5-item chain; role relevance 1.00 for all five roles. Robust detectors beat naive thresholds on precision; neither dominates everywhere — reported honestly.
+
+**When to use it.** Any on-call or NOC workflow where triage time is the metric that matters.
 
 ## 1. Meridian — learned multi-agent orchestration
 
