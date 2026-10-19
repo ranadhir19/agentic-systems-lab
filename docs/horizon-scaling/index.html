@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Horizon Scaling — Agentic Systems Lab</title>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#111724; --panel2:#0e1420; --border:#22304a;
+  --text:#e8ebf2; --muted:#98a2b8; --faint:#6b7690;
+  --blue:#6ea8fe; --green:#7ee2a8; --amber:#f0b35e; --red:#f08787;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav.top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.brand{font-weight:700;font-size:17px;color:var(--text);letter-spacing:.2px}
+.brand span{color:var(--blue)}
+nav.top .links{margin-left:auto;display:flex;gap:20px;font-size:14px}
+nav.top .links a{color:var(--muted)}
+nav.top .links a:hover{color:var(--text)}
+.hero{padding:84px 0 60px;text-align:left;
+  background:radial-gradient(900px 380px at 20% 0%,rgba(110,168,254,.12),transparent 60%)}
+.hero .kicker{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:46px;line-height:1.12;margin:0 0 20px;letter-spacing:-.5px;max-width:820px}
+.hero p.sub{color:var(--muted);font-size:18px;max-width:720px;margin:0 0 34px}
+.btn{display:inline-block;background:var(--blue);color:#0b0e14;font-weight:700;
+  padding:12px 26px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.install{margin-top:34px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.install code{background:#0e1420;border:1px solid var(--border);border-radius:8px;
+  padding:10px 18px;font-size:15px;color:var(--green)}
+.install span{color:var(--muted);font-size:14px}
+.stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
+.stats div b{font-size:26px;display:block}
+.stats div span{color:var(--muted);font-size:13px}
+section{padding:56px 0}
+h2.sec{font-size:28px;margin:0 0 8px;letter-spacing:-.3px}
+p.lead{color:var(--muted);max-width:760px;margin:0 0 30px}
+.cat{border:1px solid var(--border);border-radius:var(--radius);padding:28px;
+  margin-bottom:28px;background:var(--panel)}
+.cat h3{margin:0 0 4px;font-size:21px}
+.cat h3 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}
+.cat p.desc{color:var(--muted);margin:0 0 20px;max-width:720px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.hero h1{font-size:34px}}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;
+  padding:22px;display:flex;flex-direction:column}
+.card h4{margin:0 0 6px;font-size:18px}
+.card h4 a{color:var(--text)}
+.card .tag{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14.5px;margin:0 0 16px;flex:1}
+.card .metric{font-size:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+.card .metric b{color:var(--green)}
+.proj-hero{padding:56px 0 30px}
+.proj-hero .kicker{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.proj-hero h1{font-size:38px;margin:0 0 10px;letter-spacing:-.4px}
+.proj-hero p.tagline{color:var(--muted);font-size:18px;margin:0 0 8px}
+.crumb{font-size:13px;color:var(--faint);margin-bottom:22px}
+.crumb a{color:var(--faint)}
+.block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;margin-bottom:22px}
+.block h2{font-size:20px;margin:0 0 12px}
+.block h2 .n{display:inline-block;width:28px;height:28px;border-radius:8px;background:var(--blue);
+  color:#0b0e14;font-size:15px;text-align:center;line-height:28px;margin-right:10px;font-weight:800}
+.block p{margin:0 0 12px;color:#c9d1e2}
+.block p:last-child{margin-bottom:0}
+.block ul{margin:8px 0 0;padding-left:20px;color:#c9d1e2}
+.block li{margin-bottom:8px}
+.diagram{background:#0d1320;border:1px solid var(--border);border-radius:12px;
+  padding:18px;overflow-x:auto;margin:6px 0 4px}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.caption{font-size:13px;color:var(--faint);text-align:center;margin-top:8px}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+table.res th,table.res td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+table.res th{background:var(--panel2);color:var(--muted);font-weight:600}
+.hl{color:var(--green);font-weight:700}
+img.chart{width:100%;border-radius:10px;border:1px solid var(--border);margin-top:10px}
+code.tree{background:#0d1320;border:1px solid var(--border);border-radius:10px;
+  display:block;padding:16px 18px;font-size:13.5px;color:#c9d1e2;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.pagenav{display:flex;justify-content:space-between;margin:40px 0 60px;gap:16px}
+.pagenav a{border:1px solid var(--border);border-radius:10px;padding:14px 20px;
+  color:var(--text);font-size:14px;background:var(--panel)}
+.pagenav a small{display:block;color:var(--faint);font-size:12px}
+footer{border-top:1px solid var(--border);padding:34px 0 48px;color:var(--faint);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style></head><body>
+<nav class="top"><div class="wrap">
+<a class="brand" href="../index.html">Agentic Systems <span>Lab</span></a>
+<div class="links"><a href="../index.html#orchestration">Orchestration</a><a href="../index.html#trust">Trust, Recovery</a><a href="../index.html#performance">Performance</a><a href="../index.html#operations">Reliability</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
+</div></nav>
+<div class="wrap"><div class="proj-hero">
+<div class="crumb"><a href="../index.html">Lab</a> / <a href="../index.html#orchestration">Orchestration & Collective Intelligence</a> / 18</div>
+<div class="kicker" style="color:#6ea8fe">Orchestration & Collective Intelligence</div>
+<h1>Horizon Scaling</h1>
+<p class="tagline">How fast does reliability die with task length — and which architecture flattens the curve?</p>
+</div>
+<div class="block"><h2><span class="n">1</span>The problem</h2><p>Agents succeed on short tasks and collapse on long ones: error compounds with horizon length. Teams deploy 80-step agents with no measurement of the decay curve and no evidence for which mitigation — checkpoints, hierarchy, voting, recovery — actually helps at their horizon.</p></div>
+<div class="block"><h2><span class="n">2</span>The current gap</h2><p>The decay is discussed qualitatively ('agents fail on long tasks') but never fitted. Without the curve you cannot choose mitigations, price cost-per-success, or know the horizon at which your architecture stops being viable.</p></div>
+<div class="block"><h2><span class="n">3</span>How the solution addresses it</h2><p>A seeded long-horizon task simulator (compounding corruption: corrupted state triples fatal probability) with a baseline linear executor and four mitigations sharing one verify-and-rollback core — checkpoints, hierarchical decomposition, healflow-style recovery, per-step majority voting — plus a cost model computing <b>cost-per-successful-task</b> at each horizon.</p></div>
+<div class="block"><h2><span class="n">4</span>Architecture</h2>
+<div class="diagram"><svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8fa2c8"/>
+  </marker>
+  <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#6ea8fe"/>
+  </marker>
+  <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#7ee2a8"/>
+  </marker>
+</defs>
+
+<text x="20" y="22" fill="#99a4ba" font-size="11">success rate vs horizon length N</text>
+<line x1="60" y1="260" x2="620" y2="260" stroke="#3b4d75"/>
+<line x1="60" y1="260" x2="60" y2="40" stroke="#3b4d75"/>
+<polyline points="60,45 74,62 88,77 102,92 116,105 130,117 144,128 158,139 172,148 186,157 200,165 214,172 228,179 242,186 256,191 270,197 284,202 298,206 312,211 326,214 340,218 354,221 368,224 382,227 396,230 410,232 424,234 438,236 452,238 466,240 480,241 494,243 508,244 522,245 536,247 550,248 564,249 578,249 592,250 606,251 620,252" fill="none" stroke="#f08787" stroke-width="2.5"/>
+<polyline points="60,45 74,47 88,48 102,50 116,51 130,53 144,55 158,56 172,58 186,59 200,61 214,62 228,64 242,65 256,67 270,68 284,70 298,71 312,72 326,74 340,75 354,77 368,78 382,79 396,81 410,82 424,84 438,85 452,86 466,88 480,89 494,90 508,91 522,93 536,94 550,95 564,96 578,98 592,99 606,100 620,101" fill="none" stroke="#7ee2a8" stroke-width="2.5"/>
+<text x="480" y="120" fill="#f08787" font-size="11">baseline: 0.804 -> 0.035</text>
+<text x="480" y="70" fill="#7ee2a8" font-size="11">hierarchy: 0.740 at N=80</text>
+<text x="330" y="300" text-anchor="middle" fill="#99a4ba" font-size="11">decay is exponential (R2=0.9999); hierarchy flattens it — cheapest beyond N=10</text></svg></div>
+<div class="caption">Blueprint of the Horizon Scaling architecture. See the repo for the full implementation.</div></div>
+<div class="block"><h2><span class="n">5</span>Results</h2>
+
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>decay curve (N=5->80)</td><td>baseline 0.804 -> <b>0.035</b>; exponential fit R2 = <b>0.9999</b></td></tr>
+<tr><td>mitigations at N=80</td><td>hierarchy <b>0.740</b>, voting 0.676, recovery 0.613, checkpoints 0.596</td></tr>
+<tr><td>cheapest per horizon</td><td>baseline at N<=10; <b>hierarchy beyond</b> (145.4 vs 1211.0 at N=80)</td></tr>
+<tr><td>checkpoint sweep (N=40)</td><td>optimal k=5 (cost 86.5); k=2 verifies better but overhead dominates</td></tr>
+<tr><td>error mixes</td><td>fatal-heavy: checkpoints/recovery dominate; corruption-heavy: hierarchy wins</td></tr></table>
+<p>Seed 7, 2000 trials/cell. Theory cross-checks: baseline and voting match closed-form predictions within 0.03. Combining hierarchy + checkpoints gives 0.798 but diminishing returns on cost.</p>
+<img class="chart" src="../assets/charts/horizon-scaling.png" alt="Horizon Scaling experiment charts">
+<div class="caption">Generated by <code>experiments/run_experiments.py</code> — re-running reproduces these exactly.</div></div>
+<div class="block"><h2><span class="n">6</span>Insights</h2><ul><li><b>The decay is exponential, not anecdotal.</b> Fit q=0.959 vs theoretical 0.960 — the curve is predictable, so plan against it.</li><li><b>Mitigations are pure overhead on short tasks.</b> Below N=10 the baseline wins on cost; hierarchy pays off only at length.</li><li><b>Match the mitigation to the error mix.</b> Fatal errors want checkpoints; corruption wants hierarchy; voting is never cheapest.</li></ul></div>
+<div class="block"><h2><span class="n">7</span>Implementation</h2>
+<code class="tree">src/agentic_systems/horizon_scaling/
+  tasks.py / agents.py  # compounding-error simulator, 4 mitigations
+  metrics.py / catalog.py  # Wilson CIs, decay fits, cost-per-success
+18-horizon-scaling/
+  experiments/run_experiments.py   # a-f, seed 7</code>
+<p style="margin-top:14px">Full source, tests, and experiment code: <a href="https://github.com">18-horizon-scaling/</a> ·
+Run: <code>cd 18-horizon-scaling && python3 experiments/run_experiments.py</code></p></div>
+<div class="pagenav">
+<a href="../delegation-integrity/index.html"><small>← Previous</small>17 · Delegation Integrity</a>
+<a href="../attention-economics/index.html" style="text-align:right"><small>Next →</small>19 · Attention Economics</a>
+</div></div>
+
+<footer><div class="wrap">
+<div>Agentic Systems Lab — sixteen original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Built by Ranadhir Ghosh · MIT License</div>
+</div></footer></body></html>

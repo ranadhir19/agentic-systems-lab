@@ -483,6 +483,95 @@ def svg_enriched_observability():
     return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
 
 # ---------------------------------------------------------------------------
+
+def svg_delegation_integrity():
+    b = [SVG_DEFS]
+    b.append(box(250, 20, 160, 54, "user", "principal: top of hierarchy", fs=12, fill="#1a2b1f", stroke="#3f7a52"))
+    agents = [("A", "scoped token"), ("B", "attenuated"), ("C", "attenuated 2x")]
+    for i, (lab, sub) in enumerate(agents):
+        x = 60 + i * 185
+        b.append(box(x, 120, 170, 56, f"agent {lab}", sub, fs=11))
+        b.append(arrow(330 if i == 0 else 60 + (i-1) * 185 + 170, 47 if i == 0 else 148,
+                       x + 85, 118, color="#7ee2a8", marker="arrg"))
+    b.append(box(60, 220, 220, 56, "confused deputy", "data disguised as instruction", fs=11,
+                 fill="#2a1620", stroke="#a04a5a"))
+    b.append(box(380, 220, 220, 56, "provenance firewall", "attack success 1.00 -> 0.00", fs=11,
+                 fill="#1a2b1f", stroke="#3f7a52"))
+    b.append('<text x="330" y="306" text-anchor="middle" fill="#99a4ba" font-size="11">every delegation logged, every instruction tagged with its principal</text>')
+    inner = "\n".join(b)
+    return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
+
+def svg_horizon_scaling():
+    b = [SVG_DEFS]
+    b.append('<text x="20" y="22" fill="#99a4ba" font-size="11">success rate vs horizon length N</text>')
+    b.append('<line x1="60" y1="260" x2="620" y2="260" stroke="#3b4d75"/>')
+    b.append('<line x1="60" y1="260" x2="60" y2="40" stroke="#3b4d75"/>')
+    import math
+    pts = []
+    for i in range(41):
+        x = 60 + i * 14
+        y = 260 - 215 * math.exp(-0.0408 * i * 2)
+        pts.append(f"{x:.0f},{y:.0f}")
+    b.append(f'<polyline points="{" ".join(pts)}" fill="none" stroke="#f08787" stroke-width="2.5"/>')
+    pts2 = []
+    for i in range(41):
+        x = 60 + i * 14
+        y = 260 - 215 * math.exp(-0.0038 * i * 2)
+        pts2.append(f"{x:.0f},{y:.0f}")
+    b.append(f'<polyline points="{" ".join(pts2)}" fill="none" stroke="#7ee2a8" stroke-width="2.5"/>')
+    b.append('<text x="480" y="120" fill="#f08787" font-size="11">baseline: 0.804 -> 0.035</text>')
+    b.append('<text x="480" y="70" fill="#7ee2a8" font-size="11">hierarchy: 0.740 at N=80</text>')
+    b.append('<text x="330" y="300" text-anchor="middle" fill="#99a4ba" font-size="11">decay is exponential (R2=0.9999); hierarchy flattens it — cheapest beyond N=10</text>')
+    inner = "\n".join(b)
+    return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
+
+def svg_attention_economics():
+    b = [SVG_DEFS]
+    b.append(box(20, 120, 150, 60, "agent", "confidence 0.80", fs=12))
+    b.append(box(255, 40, 150, 60, "human", "budget: N/hr, 95% accurate", fs=11, fill="#1a2b1f", stroke="#3f7a52"))
+    b.append(box(255, 200, 150, 60, "act alone", "risk: error x stakes", fs=11, fill="#2a1620", stroke="#a04a5a"))
+    b.append(arrow(170, 140, 253, 80, color="#7ee2a8", marker="arrg", label="escalate"))
+    b.append(arrow(170, 160, 253, 220, color="#f08787", marker="arr"))
+    b.append(box(460, 120, 160, 60, "EV rule", "stakes-adjusted threshold", fs=11, fill="#1b2340", stroke="#6ea8fe"))
+    b.append(arrow(405, 70, 458, 130, color="#8fa2c8", marker="arr"))
+    b.append('<text x="330" y="300" text-anchor="middle" fill="#99a4ba" font-size="11">total cost = asks x cint + errors x stakes x cerr — overconfidence costs 6x underconfidence</text>')
+    inner = "\n".join(b)
+    return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
+
+def svg_injection_containment():
+    b = [SVG_DEFS]
+    chain = ["orchestrator", "researcher", "writer", "tool caller"]
+    for i, lab in enumerate(chain):
+        x = 20 + i * 160
+        b.append(box(x, 60, 145, 54, lab, f"hop {i+1}", fs=11,
+                     fill="#2a1620" if i == 3 else "#141c2e",
+                     stroke="#a04a5a" if i == 3 else "#3b4d75"))
+        if i < 3:
+            b.append(arrow(x + 145, 87, x + 160, 87, color="#f08787", marker="arr"))
+    b.append('<text x="330" y="140" text-anchor="middle" fill="#f08787" font-size="11">injected instruction propagates: attack success 0.65-0.74 at every depth</text>')
+    b.append(box(20, 180, 200, 56, "provenance firewall", "taint: strict block 1.00", fs=11, fill="#1a2b1f", stroke="#3f7a52"))
+    b.append(box(230, 180, 200, 56, "privilege boundary", "actions -> 0.00, FP 0.00", fs=11, fill="#1a2b1f", stroke="#3f7a52"))
+    b.append(box(440, 180, 200, 56, "mosaic detector", "cross-source catch 1.00", fs=11, fill="#1b2340", stroke="#6ea8fe"))
+    b.append('<text x="330" y="266" text-anchor="middle" fill="#99a4ba" font-size="11">subtle nudge survives sanitizers (0.74) — only provenance stops it; combined: 0.00 residual</text>')
+    inner = "\n".join(b)
+    return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
+
+def svg_behavioral_regression():
+    b = [SVG_DEFS]
+    vers = [("v1", "baseline"), ("v2", "adopt"), ("v3", "ROLLBACK"), ("v4", "pin"), ("v5", "rollback")]
+    for i, (lab, sub) in enumerate(vers):
+        x = 20 + i * 128
+        col = "#a04a5a" if "ROLLBACK" in sub or sub == "rollback" else ("#3f7a52" if sub == "adopt" else "#3b4d75")
+        b.append(box(x, 60, 116, 56, lab, sub, fs=11, stroke=col,
+                     fill="#2a1620" if "ROLLBACK" in sub else "#141c2e"))
+    b.append(box(180, 160, 300, 56, "frozen battery (120 tasks)", "paired tests vs v1, p<0.05 + material", fs=12,
+                 fill="#1b2340", stroke="#6ea8fe"))
+    b.append(box(180, 250, 140, 54, "canary 1%->10%", "v3 stopped at 40 tasks", fs=11))
+    b.append(box(340, 250, 140, 54, "severity rank", "v3 2.467 >> v5 0.765", fs=11))
+    b.append('<text x="330" y="326" text-anchor="middle" fill="#99a4ba" font-size="11">4/4 policy decisions match ground truth; battery blind below ~60 tasks</text>')
+    inner = "\n".join(b)
+    return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
+
 # Project content
 # ---------------------------------------------------------------------------
 PROJECTS = [
@@ -959,6 +1048,142 @@ dict(
 16-enriched-observability/
   experiments/run_experiments.py   # a-f, seeds 7/11/42/0/99""",
 ),
+
+dict(
+ slug="delegation-integrity", num="17",
+ name="Delegation Integrity",
+ tagline="Who authorized that? Principal hierarchies, scoped delegation, and the confused deputy — measured.",
+ category="trust", repo="17-delegation-integrity", arch=svg_delegation_integrity,
+ problem="When Agent A delegates to B which calls C to modify a production database, reconstructing who authorized what is technically difficult and legally uncertain. Agents hold credentials that can be redirected by instructions hidden in data they consume (the confused deputy); delegation converts scoped access into ambient privilege; and multi-principal workflows (buyer, merchant, payment service) can complete while violating one principal's instructions.",
+ gap="Observability tools log actions but not authority: no principal hierarchy, no per-hop scope attenuation, no provenance distinguishing instruction-channel from data-channel content. Governance literature calls attribution the hardest question of 2026 — this system makes it measurable.",
+ solution="A principal hierarchy (user > developer > deployer > third-party) with provenance-tagged instructions; <b>scoped, time-bounded authority tokens</b> with per-hop attenuation and strict/lax delegation modes; a confused-deputy simulator with 4 defense policies; a multi-principal purchase workflow with semantic conflict detection and precedence resolution; and an intent checker validating actions against stated constraints.",
+ results_table="""
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>confused deputy (200 trials x 3 variants)</td><td>naive attack success <b>1.000</b>; provenance / scope / combined all <b>0.000</b></td></tr>
+<tr><td>delegation depth 2->5</td><td>naive success 0.39 -> <b>0.96</b>; provenance attribution <b>1.000</b> at all depths</td></tr>
+<tr><td>ambient privilege (200 delegations)</td><td>strict <b>0.000</b> exceed vs lax <b>0.735</b></td></tr>
+<tr><td>multi-principal conflicts</td><td>resolution correctness <b>0.823</b> vs naive <b>0.333</b></td></tr>
+<tr><td>intent checker (300 scenarios)</td><td>precision <b>1.000</b>, recall <b>1.000</b></td></tr></table>
+<p>Seeded runs. Honest bounds: conflict detection is parser-limited (0.543 — word-form phrasings defeat demand extraction); the intent checker validates formal constraints, not natural-language intent.</p>""",
+ insights=[
+  "<b>Every hop is another injection chance.</b> Attack success climbs 0.39 → 0.96 with depth — attenuation is not optional.",
+  "<b>Without enforced attenuation, 3 in 4 delegations leak.</b> Lax mode's 0.735 ambient-privilege rate is the default in most frameworks.",
+  "<b>Attribution is structural.</b> Without provenance tokens it decays as 1/d; with them it holds at 1.000.",
+ ],
+ impl_tree="""src/agentic_systems/delegation_integrity/
+  principals.py / tokens.py  # hierarchy, provenance, scoped authority
+  deputy.py / conflicts.py / intent.py  # attacks, multi-principal, intent checks
+17-delegation-integrity/
+  experiments/run_experiments.py   # a-e, seeded""",
+),
+dict(
+ slug="horizon-scaling", num="18",
+ name="Horizon Scaling",
+ tagline="How fast does reliability die with task length — and which architecture flattens the curve?",
+ category="orchestration", repo="18-horizon-scaling", arch=svg_horizon_scaling,
+ problem="Agents succeed on short tasks and collapse on long ones: error compounds with horizon length. Teams deploy 80-step agents with no measurement of the decay curve and no evidence for which mitigation — checkpoints, hierarchy, voting, recovery — actually helps at their horizon.",
+ gap="The decay is discussed qualitatively ('agents fail on long tasks') but never fitted. Without the curve you cannot choose mitigations, price cost-per-success, or know the horizon at which your architecture stops being viable.",
+ solution="A seeded long-horizon task simulator (compounding corruption: corrupted state triples fatal probability) with a baseline linear executor and four mitigations sharing one verify-and-rollback core — checkpoints, hierarchical decomposition, healflow-style recovery, per-step majority voting — plus a cost model computing <b>cost-per-successful-task</b> at each horizon.",
+ results_table="""
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>decay curve (N=5->80)</td><td>baseline 0.804 -> <b>0.035</b>; exponential fit R2 = <b>0.9999</b></td></tr>
+<tr><td>mitigations at N=80</td><td>hierarchy <b>0.740</b>, voting 0.676, recovery 0.613, checkpoints 0.596</td></tr>
+<tr><td>cheapest per horizon</td><td>baseline at N<=10; <b>hierarchy beyond</b> (145.4 vs 1211.0 at N=80)</td></tr>
+<tr><td>checkpoint sweep (N=40)</td><td>optimal k=5 (cost 86.5); k=2 verifies better but overhead dominates</td></tr>
+<tr><td>error mixes</td><td>fatal-heavy: checkpoints/recovery dominate; corruption-heavy: hierarchy wins</td></tr></table>
+<p>Seed 7, 2000 trials/cell. Theory cross-checks: baseline and voting match closed-form predictions within 0.03. Combining hierarchy + checkpoints gives 0.798 but diminishing returns on cost.</p>""",
+ insights=[
+  "<b>The decay is exponential, not anecdotal.</b> Fit q=0.959 vs theoretical 0.960 — the curve is predictable, so plan against it.",
+  "<b>Mitigations are pure overhead on short tasks.</b> Below N=10 the baseline wins on cost; hierarchy pays off only at length.",
+  "<b>Match the mitigation to the error mix.</b> Fatal errors want checkpoints; corruption wants hierarchy; voting is never cheapest.",
+ ],
+ impl_tree="""src/agentic_systems/horizon_scaling/
+  tasks.py / agents.py  # compounding-error simulator, 4 mitigations
+  metrics.py / catalog.py  # Wilson CIs, decay fits, cost-per-success
+18-horizon-scaling/
+  experiments/run_experiments.py   # a-f, seed 7""",
+),
+dict(
+ slug="attention-economics", num="19",
+ name="Attention Economics",
+ tagline="Human attention is a priced resource. Find the optimal escalation policy — and measure trust.",
+ category="orchestration", repo="19-attention-economics", arch=svg_attention_economics,
+ problem="Agents either interrupt humans constantly (attention exhaustion) or act autonomously on high-stakes decisions (accountability failure). Escalation thresholds are set by gut feel; nobody prices the trade-off between interruption cost and error cost, and nobody measures whether the human's trust matches the agent's actual reliability.",
+ gap="Ask-vs-act is treated as a UX preference, not an optimization problem. Over-trust and under-trust are both failures with different cost signatures — unmeasured, unmanaged.",
+ solution="A decision-stream simulator (lognormal stakes, calibrated/miscalibrated confidence) with a fallible human principal (95% accurate), five escalation policies (always/never ask, fixed threshold, stakes-adjusted EV rule, budget-aware knapsack), a total-cost model (asks × interruption cost + unaudited errors × stakes × error cost), and <b>trust calibration measurement</b> (over/under-trust indices vs the EV reference).",
+ results_table="""
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>policies (3 cost regimes)</td><td><b>stakes-adjusted EV wins all</b>; never-ask catastrophic at high stakes</td></tr>
+<tr><td>optimal threshold</td><td>tracks fallibility-corrected theory within <b>0.05</b> at every cost ratio</td></tr>
+<tr><td>miscalibration</td><td>overconfidence costs <b>+10,805</b>; underconfidence +1,758 — <b>6x asymmetry</b></td></tr>
+<tr><td>trust U-curve</td><td>optimal tau 0.90; over-trust +0.1645 excess errors, under-trust +0.2385 excess interruptions</td></tr>
+<tr><td>budget exhaustion</td><td>knapsack asks 44% of high-stakes at B=50; naive truncation asks <b>0%</b></td></tr></table>
+<p>Seed 7, n=2000. Key honest finding: pricing the human's own 5% error rate is what makes the theory fit — the naive EV rule over-asked until corrected.</p>""",
+ insights=[
+  "<b>Price the human's fallibility.</b> The textbook rule assumes a perfect human and is systematically ~0.05 too trusting.",
+  "<b>Overconfidence is 6x worse than underconfidence.</b> Same ECE magnitude, wildly different cost — calibrate directionally.",
+  "<b>Bankruptcy is about order, not volume.</b> First-come truncation starves high-stakes decisions; knapsack doesn't.",
+ ],
+ impl_tree="""src/agentic_systems/attention_economics/
+  world.py / principal.py  # decision streams, fallible human
+  policies.py / cost.py / calibration.py  # 5 policies, cost model, trust metrics
+19-attention-economics/
+  experiments/run_experiments.py   # a-e, seed 7""",
+),
+dict(
+ slug="injection-containment", num="20",
+ name="Injection Containment",
+ tagline="Prompt injection doesn't stop at one agent — it rides delegation chains. Contain the propagation.",
+ category="trust", repo="20-injection-containment", arch=svg_injection_containment,
+ problem="A poisoned tool output or document flows into Agent A, which delegates to B, which acts on the injected instruction with C's credentials. Single-agent injection defenses don't cover the multi-agent propagation path — and the semantic mosaic effect assembles sensitive insights from individually innocuous sources without tripping any single-source guard.",
+ gap="No measured answer to: how far does an injected instruction propagate? Which payload types survive which defenses? What stops the subtle nudge that sanitizers can't see?",
+ solution="A 4-hop chain simulator (orchestrator → researcher → writer → tool caller) with 4 seeded payload archetypes × 3 carriers, sticky taint provenance through summarization, and four defenses: <b>provenance firewall</b> (strict/attributed), <b>privilege boundaries</b>, <b>output sanitizer</b>, <b>tripwire canaries</b> — plus a mosaic-effect harness with a cross-source aggregation detector.",
+ results_table="""
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>propagation (1-4 hops, undefended)</td><td>attack success <b>0.65-0.74 flat</b> — decided at first contact</td></tr>
+<tr><td>defenses</td><td>firewall-strict block <b>1.00</b>; privilege boundary: actions <b>0.00</b>, FP 0.00; canary detects 0.73</td></tr>
+<tr><td>hardest payload</td><td><b>subtle nudge survives sanitizers at 0.74</b> — only provenance stops it</td></tr>
+<tr><td>mosaic effect</td><td>3-4 tiles assemble (1.00); per-source guards block 0.00; aggregation detector catches <b>1.00</b></td></tr>
+<tr><td>combined</td><td><b>0.00 residual</b> on all four payloads</td></tr></table>
+<p>N=200 seeded trials/cell. Honest limits: privilege boundaries stop actions, not beliefs; sanitizers are brittle against rephrasing; canaries detect but never prevent; forged user-attribution defeats the attributed firewall (0.73) but not strict.</p>""",
+ insights=[
+  "<b>The battle is decided at first contact.</b> Success is flat across hops — stop the injection where it lands, not downstream.",
+  "<b>Sanitizers can't see nudges.</b> Only provenance — knowing where content came from — stops the subtle payload.",
+  "<b>Mosaic attacks need mosaic defenses.</b> Per-source guards are structurally blind; aggregation detection is the fix.",
+ ],
+ impl_tree="""src/agentic_systems/injection_containment/
+  content.py / payloads.py / parse.py  # taint labels, 4 payload archetypes
+  chain.py / defenses.py / mosaic.py  # 4-hop sim, 4 defenses, mosaic harness
+20-injection-containment/
+  experiments/run_experiments.py   # a-f, seeded""",
+),
+dict(
+ slug="behavioral-regression", num="21",
+ name="Behavioral Regression",
+ tagline="Your vendor shipped a new model version. Did your agent silently get worse? Find out before production does.",
+ category="trust", repo="21-behavioral-regression", arch=svg_behavioral_regression,
+ problem="Model vendors ship new versions; agent task success, tool-call formats, latency, and cost profiles shift silently. Teams discover regressions from production incidents, not tests — because no behavioral regression suite exists for their agents.",
+ gap="Ideological drift is measured (system 13); FUNCTIONAL drift is not. Nobody runs a frozen task battery with paired statistical tests across model versions, staged canaries, and pin/adopt/rollback policy.",
+ solution="A frozen 120-task regression battery (tool use, multi-step, instruction following, edge cases incl. must-refuse) run against 5 versioned model stand-ins; <b>paired statistical tests</b> (McNemar exact + t-tests; regression only if significant AND material); business-weighted severity ranking; staged canary (1% → 10%) with stop rules; and a pin/auto-adopt/rollback policy engine with rationales.",
+ results_table="""
+<table class="res"><tr><th>Experiment</th><th>Result</th></tr>
+<tr><td>sensitivity</td><td>catches regressions from ~0.10 delta; <b>0.00 false positives</b> on benign shifts</td></tr>
+<tr><td>canary</td><td>v3 stopped at 1% in <b>5/5 seeds after 40 tasks</b></td></tr>
+<tr><td>severity rank</td><td>v3 (2.467) >> v5 (0.765) > v4 (0.543) — tool-format break outranks verbosity 10x</td></tr>
+<tr><td>policy</td><td><b>4/4 decisions match ground truth</b> (adopt / rollback / pin / rollback)</td></tr>
+<tr><td>battery size</td><td>diminishing returns; below ~60 tasks the battery is <b>blind</b></td></tr></table>
+<p>Seeds 7, 11, 42, 0, 99. Honest note: format breaks compound with success deltas (measured −0.387 vs injected −0.18); canary catches big breaks, full battery catches subtle trade-offs — complementary stages.</p>""",
+ insights=[
+  "<b>Rank by business severity, not by p-value.</b> A silent tool-format break outranks a verbosity change 10-to-1.",
+  "<b>Canary and battery are complementary.</b> Staged rollout catches big breaks fast; the full suite catches subtle trade-offs.",
+  "<b>60 tasks is the floor.</b> Below it the battery is blind — size your suite deliberately.",
+ ],
+ impl_tree="""src/agentic_systems/behavioral_regression/
+  versions.py / battery.py  # 5 version stand-ins, frozen 120-task battery
+  detector.py / canary.py / policy.py  # paired tests, staged rollout, decisions
+21-behavioral-regression/
+  experiments/run_experiments.py   # a-e, seeds 7/11/42/0/99""",
+),
 ]
 
 CATEGORIES = [
@@ -1026,6 +1251,11 @@ def index_page():
                 "sre-learning": "change-risk AUC <b>0.761</b> = Bayes ceiling",
                 "leadership-insights": "<b>$35,040/yr</b> waste found; 7 vs 1 insights",
                 "enriched-observability": "<b>18.2 alerts → 5-item</b> causal chain",
+                "delegation-integrity": "<b>1.00 → 0.00</b> confused-deputy attack success",
+                "horizon-scaling": "<b>0.804 → 0.035</b> baseline decay · hierarchy <b>0.740</b> at N=80",
+                "attention-economics": "stakes-adjusted EV wins · overconfidence costs <b>6×</b>",
+                "injection-containment": "combined defenses: <b>0.00</b> residual attack",
+                "behavioral-regression": "<b>4/4</b> policy decisions match ground truth",
             }[p["slug"]]
             cards += f"""
 <div class="card"><div class="tag">{p["num"]} · {p["name"]}</div>
@@ -1040,7 +1270,7 @@ def index_page():
     return (page_head("Agentic Systems Lab") + nav() + f"""
 <div class="hero"><div class="wrap">
 <div class="kicker">Portfolio · Agentic AI Systems</div>
-<h1>Sixteen systems for the hard problems in agentic AI.</h1>
+<h1>Twenty-one systems for the hard problems in agentic AI.</h1>
 <p class="sub">Coordination, memory, reliability, and efficiency — each project is a
 complete, implemented answer to a research question, with architecture,
 seeded experiments, measured results, and honest conclusions. No demos.
@@ -1049,7 +1279,7 @@ No hand-waving.</p>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
 <div class="install"><code>pip install agentic-systems-lab</code><span>The full library — sixteen systems, one import.</span></div>
 <div class="stats">
-<div><b>16</b><span>implemented systems</span></div>
+<div><b>21</b><span>implemented systems</span></div>
 <div><b>4</b><span>categories</span></div>
 <div><b>20+</b><span>experiments, all seeded</span></div>
 <div><b>100%</b><span>reproducible — one command each</span></div>

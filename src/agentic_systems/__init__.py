@@ -66,4 +66,9 @@ __all__ = [
     "sre_learning",
     "leadership_insights",
     "enriched_observability",
+    "delegation_integrity",
+    "horizon_scaling",
+    "attention_economics",
+    "injection_containment",
+    "behavioral_regression",
 ]

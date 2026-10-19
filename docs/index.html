@@ -99,7 +99,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 </div></nav>
 <div class="hero"><div class="wrap">
 <div class="kicker">Portfolio · Agentic AI Systems</div>
-<h1>Sixteen systems for the hard problems in agentic AI.</h1>
+<h1>Twenty-one systems for the hard problems in agentic AI.</h1>
 <p class="sub">Coordination, memory, reliability, and efficiency — each project is a
 complete, implemented answer to a research question, with architecture,
 seeded experiments, measured results, and honest conclusions. No demos.
@@ -108,7 +108,7 @@ No hand-waving.</p>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
 <div class="install"><code>pip install agentic-systems-lab</code><span>The full library — sixteen systems, one import.</span></div>
 <div class="stats">
-<div><b>16</b><span>implemented systems</span></div>
+<div><b>21</b><span>implemented systems</span></div>
 <div><b>4</b><span>categories</span></div>
 <div><b>20+</b><span>experiments, all seeded</span></div>
 <div><b>100%</b><span>reproducible — one command each</span></div>
@@ -145,7 +145,15 @@ Pick the layer you care about, then drill into any system.</p>
 <div class="card"><div class="tag">11 · Emergent Goals</div>
 <h4><a href="emergent-goals/index.html">Do communicating agents invent their own goals? A seeded test of intrinsic motivation, with the failures reported too.</a></h4>
 <p>The open question behind every 'autonomous agent' pitch: given agents with an assigned goal and continuous resource flow, will they evolve <i>additional</i> goals by them…</p>
-<div class="metric">49.5 vs 34.5 self-made goals — curiosity costs survival</div></div></div></div>
+<div class="metric">49.5 vs 34.5 self-made goals — curiosity costs survival</div></div>
+<div class="card"><div class="tag">18 · Horizon Scaling</div>
+<h4><a href="horizon-scaling/index.html">How fast does reliability die with task length — and which architecture flattens the curve?</a></h4>
+<p>Agents succeed on short tasks and collapse on long ones: error compounds with horizon length. Teams deploy 80-step agents with no measurement of the decay curve and no ev…</p>
+<div class="metric"><b>0.804 → 0.035</b> baseline decay · hierarchy <b>0.740</b> at N=80</div></div>
+<div class="card"><div class="tag">19 · Attention Economics</div>
+<h4><a href="attention-economics/index.html">Human attention is a priced resource. Find the optimal escalation policy — and measure trust.</a></h4>
+<p>Agents either interrupt humans constantly (attention exhaustion) or act autonomously on high-stakes decisions (accountability failure). Escalation thresholds are set by g…</p>
+<div class="metric">stakes-adjusted EV wins · overconfidence costs <b>6×</b></div></div></div></div>
 <div class="cat" id="trust">
 <h3><span class="dot" style="background:#7ee2a8"></span>Trust, Recovery & Evidence</h3>
 <p class="desc">How agentic systems stay correct when things go wrong: proving what happened, healing workflows, and keeping recovery itself safe.</p>
@@ -165,7 +173,19 @@ Pick the layer you care about, then drill into any system.</p>
 <div class="card"><div class="tag">13 · Ideology Mirror</div>
 <h4><a href="ideology-mirror/index.html">LLMs reflect their creators' ideology. Measure the reflection: red-team the values, gate the drift, steer to your constitution.</a></h4>
 <p>Every aligned model ships its creator's values — RLHF/DPO inject annotator and corporate preferences, and the creator effect overrides pre-training data. Enterprises depl…</p>
-<div class="metric">creator divergence up to <b>1.546</b></div></div></div></div>
+<div class="metric">creator divergence up to <b>1.546</b></div></div>
+<div class="card"><div class="tag">17 · Delegation Integrity</div>
+<h4><a href="delegation-integrity/index.html">Who authorized that? Principal hierarchies, scoped delegation, and the confused deputy — measured.</a></h4>
+<p>When Agent A delegates to B which calls C to modify a production database, reconstructing who authorized what is technically difficult and legally uncertain. Agents hold …</p>
+<div class="metric"><b>1.00 → 0.00</b> confused-deputy attack success</div></div>
+<div class="card"><div class="tag">20 · Injection Containment</div>
+<h4><a href="injection-containment/index.html">Prompt injection doesn't stop at one agent — it rides delegation chains. Contain the propagation.</a></h4>
+<p>A poisoned tool output or document flows into Agent A, which delegates to B, which acts on the injected instruction with C's credentials. Single-agent injection defenses …</p>
+<div class="metric">combined defenses: <b>0.00</b> residual attack</div></div>
+<div class="card"><div class="tag">21 · Behavioral Regression</div>
+<h4><a href="behavioral-regression/index.html">Your vendor shipped a new model version. Did your agent silently get worse? Find out before production does.</a></h4>
+<p>Model vendors ship new versions; agent task success, tool-call formats, latency, and cost profiles shift silently. Teams discover regressions from production incidents, n…</p>
+<div class="metric"><b>4/4</b> policy decisions match ground truth</div></div></div></div>
 <div class="cat" id="performance">
 <h3><span class="dot" style="background:#f0b35e"></span>Performance & Portability</h3>
 <p class="desc">How agentic systems run fast and run anywhere: serving efficiency under load, and skills that survive a change of model provider.</p>

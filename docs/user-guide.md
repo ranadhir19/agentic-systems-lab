@@ -204,6 +204,56 @@ targeted question beats saying "I didn't understand".
 
 **When to use it.** Any on-call or NOC workflow where triage time is the metric that matters.
 
+## 17. Delegation Integrity — who authorized that?
+
+**The problem.** When Agent A delegates to B which calls C to modify a production database, reconstructing who authorized what is technically difficult and legally uncertain. Agents hold credentials redirectable by instructions hidden in data (the confused deputy); delegation converts scoped access into ambient privilege.
+
+**The idea.** A principal hierarchy (user > developer > deployer > third-party) with provenance-tagged instructions; scoped, time-bounded authority tokens with per-hop attenuation; a confused-deputy simulator with 4 defense policies; multi-principal conflict detection with precedence resolution; and an intent checker validating actions against stated constraints.
+
+**Key result.** Naive confused-deputy attack success 1.000 → 0.000 under provenance/scope defenses; attribution holds at 1.000 at all depths vs 1/d without tokens; lax delegation leaks ambient privilege in 73.5% of cases. Honest bound: conflict detection is parser-limited (0.543).
+
+**When to use it.** Any deployment where agents act with delegated credentials across trust boundaries.
+
+## 18. Horizon Scaling — the decay curve
+
+**The problem.** Agents succeed on short tasks and collapse on long ones — error compounds with horizon length — but nobody measures the decay curve or compares mitigations, so architecture choices are made on anecdote.
+
+**The idea.** A seeded long-horizon simulator (compounding corruption) with a baseline executor and four mitigations sharing one verify-and-rollback core: checkpoints, hierarchical decomposition, healflow-style recovery, per-step majority voting — plus a cost-per-success model at each horizon.
+
+**Key result.** The decay is exponential (R²=0.9999): baseline 0.804 → 0.035 from N=5 to 80. Hierarchy reaches 0.740 at N=80 and is cheapest beyond N=10; mitigations are pure overhead below N=10; fatal-heavy errors want checkpoints, corruption-heavy want hierarchy.
+
+**When to use it.** Before deploying any agent on tasks longer than ~10 steps — fit your curve first.
+
+## 19. Attention Economics — price the interruption
+
+**The problem.** Agents either interrupt humans constantly or act autonomously on high-stakes decisions. Escalation thresholds are set by gut feel; the interruption-cost vs error-cost trade-off is unpriced, and human trust is never calibrated against actual reliability.
+
+**The idea.** Decision streams with lognormal stakes and calibrated/miscalibrated confidence, a fallible human principal (95% accurate), five escalation policies (always/never ask, fixed threshold, stakes-adjusted EV rule, budget-aware knapsack), a total-cost model, and trust calibration indices (over/under-trust vs the EV reference).
+
+**Key result.** The stakes-adjusted EV rule wins in all cost regimes; the optimal threshold tracks the fallibility-corrected theory within 0.05; overconfidence costs 6× underconfidence at equal ECE; knapsack budgeting asks 44% of high-stakes decisions at B=50 while naive truncation asks 0%.
+
+**When to use it.** Designing human-in-the-loop oversight where attention is the scarce resource.
+
+## 20. Injection Containment — stop it at first contact
+
+**The problem.** A poisoned tool output flows into Agent A, which delegates to B, which acts on the injected instruction with C's credentials. Single-agent defenses don't cover the propagation path; the semantic mosaic effect assembles sensitive insights from innocuous sources without tripping any single-source guard.
+
+**The idea.** A 4-hop chain simulator with 4 payload archetypes × 3 carriers, sticky taint provenance through summarization, and four defenses: provenance firewall, privilege boundaries, output sanitizer, tripwire canaries — plus a mosaic harness with a cross-source aggregation detector.
+
+**Key result.** Attack success is flat 0.65–0.74 across hops — the battle is decided at first contact. Combined defenses reach 0.00 residual; the subtle nudge survives sanitizers at 0.74 and is stopped only by provenance; the aggregation detector catches the mosaic at 1.00 with 0 false positives.
+
+**When to use it.** Any multi-agent deployment consuming untrusted content (documents, web, tool outputs).
+
+## 21. Behavioral Regression — catch the silent downgrade
+
+**The problem.** Vendors ship new model versions; agent task success, tool-call formats, latency, and cost shift silently, and teams learn about regressions from production incidents.
+
+**The idea.** A frozen 120-task regression battery run against versioned model stand-ins; paired statistical tests (regression only if significant AND material); business-weighted severity ranking; staged canary (1% → 10%) with stop rules; and a pin/auto-adopt/rollback policy engine with rationales.
+
+**Key result.** Catches regressions from ~0.10 delta with 0.00 false positives on benign shifts; canary stops the v3 regression at 1% in 5/5 seeds after 40 tasks; 4/4 policy decisions match ground truth; the battery is blind below ~60 tasks.
+
+**When to use it.** Before adopting any new model version under a production agent fleet.
+
 ## 1. Meridian — learned multi-agent orchestration
 
 **The problem.** A single orchestrator becomes a bottleneck on complex
