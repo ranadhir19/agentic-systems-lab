@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agentic-systems-lab"
 version = "0.1.0"
-description = "Six original agentic-AI systems as a reusable library: multi-agent orchestration, evidence ledgers, LLM inference simulation, portable skills, collective memory, and self-healing workflows"
+description = "Seven original agentic-AI systems as a reusable library: multi-agent orchestration, evidence ledgers, LLM inference simulation, portable skills, collective memory, self-healing workflows, and intent inference"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

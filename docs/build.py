@@ -297,6 +297,37 @@ def svg_healflow():
     inner = "\n".join(b)
     return f'<svg viewBox="0 0 660 440" width="660" height="440" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
 
+def svg_intent_inference():
+    b = [SVG_DEFS]
+    # top: traditional path (dead end)
+    b.append(f'<text x="20" y="22" fill="#f08787" font-size="12" font-weight="700">traditional: classify</text>')
+    top = ["utterance", "TF-IDF", "softmax", "ONE LABEL"]
+    for i, lab in enumerate(top):
+        x = 20 + i * 155
+        b.append(box(x, 35, 140, 50, lab, fs=12,
+                     fill="#2a1620" if lab == "ONE LABEL" else "#141c2e",
+                     stroke="#a04a5a" if lab == "ONE LABEL" else "#3b4d75"))
+        if i < 3:
+            b.append(arrow(x + 140, 60, x + 155, 60))
+    b.append(f'<text x="20" y="108" fill="#f08787" font-size="11">no memory, no goals — paraphrases and novel utterances end in "unknown"</text>')
+    # bottom: inference path
+    b.append(f'<text x="20" y="142" fill="#7ee2a8" font-size="12" font-weight="700">inference: understand, then goals, then plan</text>')
+    stages = [("memory", "entities, facts, goals"),
+              ("semantics", "frame — no labels"),
+              ("goals", "primary/secondary, missing info"),
+              ("planner", "ask vs act, tools")]
+    for i, (lab, sub) in enumerate(stages):
+        x = 20 + i * 155
+        b.append(box(x, 155, 140, 56, lab, sub, fs=12,
+                     fill="#1a2b1f", stroke="#3f7a52"))
+        if i < 3:
+            b.append(arrow(x + 140, 183, x + 155, 183, color="#7ee2a8", marker="arrg"))
+    b.append(arrow(555, 211, 555, 250, color="#7ee2a8", marker="arrg"))
+    b.append(box(430, 255, 210, 56, "orchestrator", "specialist agents → response", fs=12,
+                 fill="#1b2340", stroke="#6ea8fe"))
+    inner = "\n".join(b)
+    return f'<svg viewBox="0 0 660 330" width="660" height="330" xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
+
 # ---------------------------------------------------------------------------
 # Project content
 # ---------------------------------------------------------------------------
@@ -477,6 +508,42 @@ dict(
 06-healflow/
   experiments/run_experiments.py   # 6 scenarios x 4 systems + transfer test""",
 ),
+dict(
+ slug="intent-inference", num="07",
+ name="Intent Inference",
+ tagline="Classification puts a label on words. Inference figures out what you want — goal, constraints, missing pieces — then plans.",
+ category="orchestration", repo="07-intent-inference", arch=svg_intent_inference,
+ problem="Traditional chatbots treat language understanding as classification: utterance → one predefined intent label → dialogue manager → API call. This breaks on paraphrases with low lexical overlap (\"Can you tell me whether I can afford lunch today?\"), multiple intents in one utterance (\"I forgot my password, but I also changed my phone number, and I can't receive OTP\"), implicit goals (\"I'm hungry\"), intent that evolves across turns (\"I have an interview tomorrow\" … \"What should I wear?\"), and utterances whose meaning exists only in context (\"Book me a hotel\" … \"Make it cheaper\"). A single label cannot represent any of these, and a stateless router cannot resolve the last two at all.",
+ gap="Intent taxonomies are designed by developers, not discovered from users. Every utterance outside the catalog — or combining several in-catalog intents — collapses to the same dead end: a low-confidence prediction or a generic \"Sorry, I didn't understand. Please rephrase.\" Confidence scores measure how well an utterance matches training examples, not whether the system understands what the user wants. The dialogue manager has no notion of goals, missing information, or conversation history.",
+ solution="A ChatGPT-style inference pipeline in which <b>intent is emergent, never classified</b>: conversation memory → semantic understanding (meaning frames, not labels) → goal extraction producing <b>structured goals</b> (primary/secondary, constraints, missing info, confidence) → task decomposition → planner (ask-vs-act, tool selection) → orchestrator dispatching specialist stub agents. Situation prototypes match utterances in embedding space with discriminative-term gating; per-clause decomposition handles multi-intent input; predicate-level disambiguation resolves \"afford lunch\" to money, not hunger; evidence-checked missing-info questions are asked only when the answer is genuinely absent.",
+ results_table="""
+<table class="res"><tr><th>Phenomenon</th><th>n</th><th>Classifier</th><th>Inference pipeline</th></tr>
+<tr><td>paraphrase</td><td>5</td><td>0.40</td><td><b>1.00</b></td></tr>
+<tr><td>multi-intent</td><td>3</td><td>0.00</td><td><b>1.00</b></td></tr>
+<tr><td>latent</td><td>2</td><td>0.50</td><td><b>1.00</b></td></tr>
+<tr><td>dynamic</td><td>1</td><td>0.00</td><td><b>1.00</b></td></tr>
+<tr><td>context</td><td>3</td><td>0.33</td><td><b>1.00</b></td></tr>
+<tr><td>out-of-catalog</td><td>2</td><td>0.00</td><td><b>1.00</b></td></tr>
+<tr><td>standard</td><td>5</td><td>1.00</td><td><b>1.00</b></td></tr></table>
+<p>Aggregate task success: classifier <b>45%</b> vs pipeline <b>100%</b> (recall 1.0, precision 1.0). The classifier's 7 clarifications are all the same useless fallback; the pipeline's 6 are targeted missing-info questions. No utterance ever yields "unknown".</p>""",
+ insights=[
+  "<b>One label cannot hold a conversation.</b> The classifier fails multi-intent and out-of-catalog structurally — a softmax over a fixed catalog has nowhere to put three goals or a novel one.",
+  "<b>\"Unknown\" is an architecture failure, not a data gap.</b> The pipeline's clarifications are targeted missing-info questions — a different kind of clarification, asked for a reason.",
+  "<b>Emergence beats enumeration.</b> Paraphrases like \"afford lunch today\" resolve through embedding neighborhoods plus predicate disambiguation — no training example required.",
+  "<b>Memory is what makes the second turn work.</b> \"Make it cheaper\" and \"What should I wear?\" are meaningless as isolated classifications; inherited context turns them into refine_search and attire_advice.",
+  "<b>Ask-vs-act needs evidence checks, not confidence thresholds.</b> Asking \"how much?\" when the user already said \"$200\" is as bad as never asking.",
+ ],
+ impl_tree="""src/agentic_systems/intent_inference/
+  classifier.py     # TF-IDF + softmax regression (numpy) + dialogue manager
+  embeddings.py     # semantic space over gated situation prototypes
+  memory.py         # conversation memory: entities, goals, facts, anaphora
+  goals.py          # structured goal extraction + missing-info evidence checks
+  planner.py        # decomposition, ask-vs-act, tool selection
+  orchestrator.py   # stub agents with deterministic structured outcomes
+  pipeline.py       # the full inference loop; evaluate.py grades both systems
+07-intent-inference/
+  experiments/run_experiments.py   # frozen 20-case suite, seed 7""",
+),
 ]
 
 CATEGORIES = [
@@ -514,7 +581,7 @@ def page_head(title):
 
 PAGE_FOOT = """
 <footer><div class="wrap">
-<div>Agentic Systems Lab — six original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Agentic Systems Lab — seven original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
 <div>Built by Ranadhir Ghosh · MIT License</div>
 </div></footer></body></html>"""
 
@@ -531,6 +598,7 @@ def index_page():
                 "skillbridge-mcp": "<b>2×</b> lower cross-model variance",
                 "collective-memory-fabric": "<b>0%</b> wrong answers under attack",
                 "healflow": "<b>6/6</b> safe outcomes · 0 side effects",
+                "intent-inference": "<b>100%</b> task success vs 45% classification baseline",
             }[p["slug"]]
             cards += f"""
 <div class="card"><div class="tag">{p["num"]} · {p["name"]}</div>
@@ -545,16 +613,16 @@ def index_page():
     return (page_head("Agentic Systems Lab") + nav() + f"""
 <div class="hero"><div class="wrap">
 <div class="kicker">Portfolio · Agentic AI Systems</div>
-<h1>Six systems for the hard problems in agentic AI.</h1>
+<h1>Seven systems for the hard problems in agentic AI.</h1>
 <p class="sub">Coordination, memory, reliability, and efficiency — each project is a
 complete, implemented answer to a research question, with architecture,
 seeded experiments, measured results, and honest conclusions. No demos.
 No hand-waving.</p>
 <a class="btn" href="#orchestration">Explore the systems</a>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
-<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — six systems, one import.</span></div>
+<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — seven systems, one import.</span></div>
 <div class="stats">
-<div><b>6</b><span>implemented systems</span></div>
+<div><b>7</b><span>implemented systems</span></div>
 <div><b>3</b><span>categories</span></div>
 <div><b>20+</b><span>experiments, all seeded</span></div>
 <div><b>100%</b><span>reproducible — one command each</span></div>

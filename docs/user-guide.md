@@ -1,6 +1,6 @@
 # Agentic Systems Lab — User Guide
 
-Six original agentic-AI systems, packaged as one installable Python
+Seven original agentic-AI systems, packaged as one installable Python
 library. Each system is a complete, working answer to a hard problem in
 production agentic AI — with seeded experiments you can re-run, measured
 results, and honest conclusions about what works and what doesn't.
@@ -51,8 +51,59 @@ python3 examples/01_meridian_quickstart.py
 | Reusing agent skills across model providers | `skillbridge` | Portability engineering: versioned skill packages, capability brokering, model adapters, and governance policy as code |
 | Agents sharing beliefs without being lied to | `memory_fabric` | Epistemic defense: versioned claims, evidence-weighted quorum reconciliation, expiry, and revocation |
 | Workflows that break in production at 3am | `healflow` | Self-healing runtime design: contracts, checkpoints, causal diagnosis, smallest-viable repair, verified recovery |
+| Understanding what a user wants across paraphrases, multi-intent turns, and conversation history | `intent_inference` | Goal inference vs intent classification: emergent structured goals, ask-vs-act planning, memory-grounded context resolution |
 
 ---
+
+## 7. Intent Inference — goal inference vs intent classification
+
+**The problem.** Traditional chatbots treat language understanding as
+classification: utterance → one predefined intent label → dialogue
+manager → API call. This breaks on paraphrases ("Can you tell me whether
+I can afford lunch today?"), multi-intent utterances ("I forgot my
+password, but I also changed my phone number, and I can't receive OTP"),
+implicit goals ("I'm hungry"), intent that evolves across turns, and
+utterances whose meaning exists only in context ("Book me a hotel" …
+"Make it cheaper").
+
+**The gap.** Intent taxonomies are designed by developers, not discovered
+from users. Everything outside the catalog — or combining several
+in-catalog intents — collapses to "Sorry, I didn't understand. Please
+rephrase." The dialogue manager has no notion of goals, missing
+information, or conversation history.
+
+**The idea.** A ChatGPT-style pipeline in which intent is **emergent,
+never classified**: conversation memory → semantic understanding
+(meaning frames, not labels) → structured goal extraction
+(primary/secondary goals, constraints, missing info, confidence) →
+planner (decompose, ask-vs-act, tool selection) → orchestrator
+dispatching specialist agents. "My Apple laptop screen becomes dark after
+login" yields `diagnose_display` with missing-info questions — *Is an
+external monitor connected? Have you tried safe mode?* — exactly the
+structured output a reasoning assistant would produce. A question is
+asked only when its evidence is genuinely absent ("Transfer $200 to
+savings" asks nothing).
+
+**Key result.** Head-to-head on a frozen 20-case suite (seed 7): the
+TF-IDF + softmax classifier gets 45% task success — 0% on multi-intent,
+0% on out-of-catalog, 40% on paraphrases. The inference pipeline gets
+100% on every phenomenon, with 6 targeted clarifications instead of 7
+useless fallbacks. No utterance ever yields "unknown".
+
+**Try it:**
+
+```python
+from agentic_systems.intent_inference import InferencePipeline
+
+pipe = InferencePipeline(seed=7)
+r = pipe.turn("My laptop is overheating and I also forgot my Wi-Fi password")
+print([g.id for g in r.goals])   # ['laptop_support', 'wifi_help']
+print(r.response)
+```
+
+**When to use it.** Conversational agents where users paraphrase, combine
+requests, speak implicitly, or rely on context — and where asking a
+targeted question beats saying "I didn't understand".
 
 ## 1. Meridian — learned multi-agent orchestration
 
@@ -321,6 +372,7 @@ src/agentic_systems/      # the installable library
   skillbridge/            # 04 · portable, governed AI skills
   memory_fabric/          # 05 · governed collective memory
   healflow/               # 06 · self-healing workflows
+  intent_inference/       # 07 · intent classification vs inference
 examples/                 # one runnable quickstart per system
 docs/                     # GitHub Pages site + this guide
 01-meridian-orchestration/  # per-system: README, experiments/, results/, tests/
