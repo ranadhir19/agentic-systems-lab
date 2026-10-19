@@ -1050,7 +1050,7 @@ No hand-waving.</p>
 <div class="install"><code>pip install agentic-systems-lab</code><span>The full library — sixteen systems, one import.</span></div>
 <div class="stats">
 <div><b>16</b><span>implemented systems</span></div>
-<div><b>3</b><span>categories</span></div>
+<div><b>4</b><span>categories</span></div>
 <div><b>20+</b><span>experiments, all seeded</span></div>
 <div><b>100%</b><span>reproducible — one command each</span></div>
 </div></div></div>
