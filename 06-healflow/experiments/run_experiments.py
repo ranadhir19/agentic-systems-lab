@@ -19,15 +19,16 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.catalog import (SUBSTITUTES, PREDS, build_injector, etl_flow,
-                         order_flow, research_flow)
-from src.runtime import HealFlowRuntime, ReplanBaseline, RetryBaseline
+from agentic_systems.healflow import (SUBSTITUTES, PREDS, build_injector,
+                                     etl_flow, order_flow, research_flow,
+                                     HealFlowRuntime, ReplanBaseline,
+                                     RetryBaseline)
 
 
 def garbage_plan(out):

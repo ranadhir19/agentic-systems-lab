@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-systems-lab"
+version = "0.1.0"
+description = "Six original agentic-AI systems as a reusable library: multi-agent orchestration, evidence ledgers, LLM inference simulation, portable skills, collective memory, and self-healing workflows"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Ranadhir Ghosh" }]
+keywords = ["agents", "multi-agent", "orchestration", "llm-inference", "mcp", "reliability", "ai-safety"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "numpy>=1.24",
+    "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+dev = ["build", "twine"]
+
+[project.urls]
+Homepage = "https://github.com/ranadhir19/agentic-systems-lab"
+Documentation = "https://ranadhir19.github.io/agentic-systems-lab/"
+Repository = "https://github.com/ranadhir19/agentic-systems-lab"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md"]

@@ -2,12 +2,18 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
-from src.blackboard import Blackboard
-from src.orchestrators import MeridianSystem, RunConfig
-from src.optimizer import RoutingOptimizer, scalar_reward
-from src.tasks import Task, TaskKind, TaskGenerator
+from agentic_systems.meridian import (
+    Blackboard,
+    MeridianSystem,
+    RunConfig,
+    RoutingOptimizer,
+    Task,
+    TaskGenerator,
+    TaskKind,
+    scalar_reward,
+)
 
 
 def test_scalar_reward_orders_correctly():
@@ -38,7 +44,7 @@ def test_system_runs_all_configs():
 
 
 def test_optimizer_learns():
-    from src.agents import build_fleet
+    from agentic_systems.meridian import build_fleet
     fleet = build_fleet(7)
     opt = RoutingOptimizer(list(fleet), fleet, seed=7)
     task = Task(0, TaskKind.MIXED, 4, "t", "b")

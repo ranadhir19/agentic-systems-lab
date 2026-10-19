@@ -29,13 +29,13 @@ flowchart LR
     R -->|no seed| U[UNREPLAYABLE\ngovernance finding]
 ```
 
-**Ledger** (`src/ledger.py`): each `DecisionRecord` carries `inputs_hash`,
+**Ledger** (agentic_systems/sentinel/ledger.py`): each `DecisionRecord` carries `inputs_hash`,
 `policy_version`, `model_params` (including the seed), the tool-call
 cassette (name + args/result hashes), and `output_hash`, sealed with
 SHA-256 and chained to the previous entry. `verify_chain()` re-seals every
 entry and checks every link.
 
-**Replay** (`src/ledger.py::ReplayEngine`): re-executes the decision with the
+**Replay** (agentic_systems/sentinel/ledger.py::ReplayEngine`): re-executes the decision with the
 recorded seed/params against the recorded tool cassette — never live tools —
 and compares output hashes. Stepwise executors additionally localize the
 first diverging step.

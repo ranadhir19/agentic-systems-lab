@@ -21,16 +21,17 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.baselines import IndependentMemory, NaiveSharedMemory, ProvenanceMemory
-from src.memory import MemoryFabric
-from src.simulation import (INJECT_END, INJECT_START, TICKS, N_SEEDS,
-                            build_agents, run)
+from agentic_systems.memory_fabric import (
+    MemoryFabric, IndependentMemory, NaiveSharedMemory, ProvenanceMemory,
+    build_agents, run)
+from agentic_systems.memory_fabric.simulation import (
+    INJECT_END, INJECT_START, TICKS, N_SEEDS)
 
 SYSTEMS = [
     ("independent", IndependentMemory),

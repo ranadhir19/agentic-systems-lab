@@ -10,13 +10,13 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.simulator import Engine, _gen_requests
+from agentic_systems.forge import Engine, generate_requests
 
 POLICIES = ["static-fcfs", "continuous", "continuous-srpt"]
 LOADS = [(0.0008, "low (0.8 rps)"), (0.002, "medium (2 rps)"), (0.004, "high (4 rps)")]
@@ -30,7 +30,7 @@ def main():
 
     table = {}
     for lam, label in LOADS:
-        reqs = _gen_requests(N, lam, seed=42)
+        reqs = generate_requests(N, lam, seed=42)
         for pol in POLICIES:
             # fresh copies: Engine mutates requests
             import copy

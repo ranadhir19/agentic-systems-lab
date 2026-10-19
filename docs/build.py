@@ -40,6 +40,10 @@ nav.top .links a:hover{color:var(--text)}
   padding:12px 26px;border-radius:10px;font-size:15px}
 .btn:hover{text-decoration:none;filter:brightness(1.08)}
 .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.install{margin-top:34px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.install code{background:#0e1420;border:1px solid var(--border);border-radius:8px;
+  padding:10px 18px;font-size:15px;color:var(--green)}
+.install span{color:var(--muted);font-size:14px}
 .stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
 .stats div b{font-size:26px;display:block}
 .stats div span{color:var(--muted);font-size:13px}
@@ -307,25 +311,25 @@ dict(
  solution="Meridian combines a <b>vertical hierarchy</b> (meta-orchestrator → domain orchestrators → workers) with a <b>horizontal blackboard</b> (propose / request / commit, with escalation avoidance) and a <b>decision optimizer</b>: a contextual Thompson-sampling router with profile-based priors plus a decomposition planner, optimizing a scalarized objective of quality − cost − latency.",
  results_table="""
 <table class="res"><tr><th>Config</th><th>Success</th><th>Mean quality</th><th>Cost/task</th><th>Latency</th></tr>
-<tr><td>Single agent</td><td>80.4%</td><td>0.742</td><td>$0.124</td><td>8.1s</td></tr>
-<tr><td>Vertical only</td><td>70.8%</td><td>0.723</td><td>$0.113</td><td>6.8s</td></tr>
-<tr><td>Vertical + horizontal</td><td>74.2%</td><td>0.732</td><td>$0.088</td><td>5.5s</td></tr>
-<tr><td>+ hand-tuned tiers</td><td>88.8%</td><td>0.779</td><td>$0.168</td><td>6.5s</td></tr>
-<tr><td><b>Meridian (full)</b></td><td><b class="hl">89.6%</b></td><td><b>0.791</b></td><td>$0.179</td><td>7.0s</td></tr></table>
-<p>240 tasks, seed 7; 95% CIs in the repo. The learned router <b>matches the hand-tuned tiering policy</b> (89.6% vs 88.8%) with zero hand-tuning — and keeps adapting online, which a fixed rule cannot do.</p>""",
+<tr><td>Single agent</td><td>83.3%</td><td>0.742</td><td>$0.124</td><td>8.0s</td></tr>
+<tr><td>Vertical only</td><td>74.2%</td><td>0.731</td><td>$0.112</td><td>6.6s</td></tr>
+<tr><td>Vertical + horizontal</td><td>73.8%</td><td>0.737</td><td>$0.087</td><td>5.2s</td></tr>
+<tr><td>+ hand-tuned tiers</td><td>90.8%</td><td>0.782</td><td>$0.169</td><td>6.4s</td></tr>
+<tr><td><b>Meridian (full)</b></td><td><b class="hl">90.4%</b></td><td><b>0.797</b></td><td>$0.183</td><td>7.0s</td></tr></table>
+<p>240 tasks, seed 7; 95% CIs in the repo. The learned router <b>matches the hand-tuned tiering policy</b> (90.4% vs 90.8%) with zero hand-tuning — and keeps adapting online, which a fixed rule cannot do.</p>""",
  insights=[
   "<b>Hierarchy alone is not enough.</b> Structure without routing intelligence just redistributes the same decisions (vertical-only underperforms a single agent).",
   "<b>The horizontal layer is the efficiency engine.</b> Peer-resolved handoffs avoid ~175 escalations per 240 tasks — but fixed tier routing fails hard subtasks.",
   "<b>Routing intelligence is the quality engine.</b> Matching worker tier to subtask difficulty lifts success from 74% to ~90%.",
   "<b>The optimizer discovers the hand-tuned policy on its own.</b> Profile-based priors prevent Thompson-sampling lock-in; decaying exploration keeps it adaptive.",
  ],
- impl_tree="""01-meridian-orchestration/
-  src/
-    tasks.py          # task generator: difficulty-tagged subtasks
-    agents.py         # worker tiers (standard/pro) + capability profiles
-    blackboard.py     # horizontal coordination: propose/request/commit
-    optimizer.py      # contextual Thompson sampling + decomposition planner
-    orchestrators.py  # meta + domain orchestrators (vertical hierarchy)
+ impl_tree="""src/agentic_systems/meridian/
+  tasks.py          # task generator: difficulty-tagged subtasks
+  agents.py         # worker tiers (standard/pro) + capability profiles
+  blackboard.py     # horizontal coordination: propose/request/commit
+  optimizer.py      # contextual Thompson sampling + decomposition planner
+  orchestrators.py  # meta + domain orchestrators (vertical hierarchy)
+01-meridian-orchestration/
   experiments/run_experiments.py   # 5-config ablation, 240 tasks
   results/            # results.md + charts.png (generated)""",
 ),
@@ -351,11 +355,10 @@ dict(
   "<b>Verdicts beat diffs.</b> MATCH / DIVERGED / UNREPLAYABLE gives auditors and debuggers a decision, not a data dump.",
   "<b>Step-level location matters.</b> Knowing <i>which</i> step diverged turns replay from forensics into debugging.",
  ],
- impl_tree="""02-sentinel-ledger/
-  src/
-    ledger.py         # hash-chained record store, verify(), tamper detection
-    sim_agent.py      # instrumented agent: seeds + tool cassettes
-    __init__.py
+ impl_tree="""src/agentic_systems/sentinel/
+  ledger.py         # hash-chained record store, verify(), tamper detection
+  sim_agent.py      # instrumented agent: seeds + tool cassettes
+02-sentinel-ledger/
   experiments/run_experiments.py   # clean replay + 4 fault injections""",
 ),
 dict(
@@ -378,9 +381,9 @@ dict(
   "<b>SRPT is a mean-vs-tail tradeoff.</b> Production SRPT needs anti-starvation (aging, fairness bands); the simulator makes the failure mode visible.",
   "<b>KV-cache utilization tells the story</b> (23% vs 98%): static batching wastes capacity on padding and idle slots.",
  ],
- impl_tree="""03-forge-inference/
-  src/
-    simulator.py      # discrete-event engine: arrivals, scheduler, KV cap
+ impl_tree="""src/agentic_systems/forge/
+  simulator.py      # discrete-event engine: arrivals, scheduler, KV cap
+03-forge-inference/
   experiments/run_experiments.py   # 3 policies x 3 loads, 1500 req/cell""",
 ),
 dict(
@@ -405,16 +408,15 @@ dict(
   "<b>Governance composes with portability.</b> Version deprecation and sensitivity gates work identically across providers because they sit above the adapter.",
   "<b>The economics argument is the adoption argument.</b> Per-provider rebuilds scale linearly; the framework cost is near-fixed.",
  ],
- impl_tree="""04-skillbridge-mcp/
-  src/
-    skill.py          # SkillPackage: manifest + instructions + workflow + eval
-    registry.py       # versioned registry, caret-range resolution
-    capabilities.py   # CapabilityBroker -> MCP-style servers
-    adapters.py       # openai / anthropic / local tool-convention adapters
-    policy.py         # allowlist, sensitivity gates, deprecation
-    runtime.py        # resolve -> govern -> bind -> execute -> audit
-    eval.py           # cross-model portability harness
-    catalog.py        # 6 skills, 132 eval cases""",
+ impl_tree="""src/agentic_systems/skillbridge/
+  skill.py          # SkillPackage: manifest + instructions + workflow + eval
+  registry.py       # versioned registry, caret-range resolution
+  capabilities.py   # CapabilityBroker -> MCP-style servers
+  adapters.py       # openai / anthropic / local tool-convention adapters
+  policy.py         # allowlist, sensitivity gates, deprecation
+  runtime.py        # resolve -> govern -> bind -> execute -> audit
+  eval.py           # cross-model portability harness
+  catalog.py        # 6 skills, 132 eval cases""",
 ),
 dict(
  slug="collective-memory-fabric", num="05",
@@ -437,11 +439,11 @@ dict(
   "<b>Governance is what makes sharing safe for weak models.</b> The least accurate family gains the most (+25pp) — the fabric, not the model, carries reliability.",
   "<b>Robustness has a bounded price:</b> fact flips converge in ~5–8 ticks (the cost of demanding corroboration), ~0.2 ms/tick for reconciliation.",
  ],
- impl_tree="""05-collective-memory-fabric/
-  src/
-    memory.py         # Claim, MemoryFabric: admit/merge/reconcile/query/revoke
-    baselines.py      # independent, last-write-wins, majority-vote
-    simulation.py     # 8 agents, 10 flipping facts, injected misinformation
+ impl_tree="""src/agentic_systems/memory_fabric/
+  memory.py         # Claim, MemoryFabric: admit/merge/reconcile/query/revoke
+  baselines.py      # independent, last-write-wins, majority-vote
+  simulation.py     # 8 agents, 10 flipping facts, injected misinformation
+05-collective-memory-fabric/
   experiments/run_experiments.py   # 4 systems x 5 seeds""",
 ),
 dict(
@@ -465,14 +467,14 @@ dict(
   "<b>Verify, then resume.</b> The verification gate is what prevents a bad repair from cascading — failed verification escalates instead of looping.",
   "<b>Repair knowledge compounds.</b> Keying memory by failure shape (not workflow or model) makes validated strategies reusable — including by weaker models.",
  ],
- impl_tree="""06-healflow/
-  src/
-    workflow.py       # DAG + contracts + checkpoints + rollback
-    faults.py         # deterministic fault injector (outage/schema/corrupt)
-    diagnosis.py      # causal walk-back, cause taxonomy
-    repair.py         # RepairMemory: failure signature -> validated repair
-    runtime.py        # HealFlow loop + retry/replan baselines
-    catalog.py        # 3 workflows: order, ETL, research
+ impl_tree="""src/agentic_systems/healflow/
+  workflow.py       # DAG + contracts + checkpoints + rollback
+  faults.py         # deterministic fault injector (outage/schema/corrupt)
+  diagnosis.py      # causal walk-back, cause taxonomy
+  repair.py         # RepairMemory: failure signature -> validated repair
+  runtime.py        # HealFlow loop + retry/replan baselines
+  catalog.py        # 3 workflows: order, ETL, research
+06-healflow/
   experiments/run_experiments.py   # 6 scenarios x 4 systems + transfer test""",
 ),
 ]
@@ -500,7 +502,7 @@ def nav(prefix=""):
     return f"""
 <nav class="top"><div class="wrap">
 <a class="brand" href="{prefix}index.html">Agentic Systems <span>Lab</span></a>
-<div class="links">{cats}<a href="https://github.com">GitHub ↗</a></div>
+<div class="links">{cats}<a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
 </div></nav>"""
 
 def page_head(title):
@@ -523,7 +525,7 @@ def index_page():
         cards = ""
         for p in projs:
             metric = {
-                "meridian-orchestration": "<b>89.6%</b> success — learned router matches hand-tuning",
+                "meridian-orchestration": "<b>90.4%</b> success — learned router matches hand-tuning",
                 "sentinel-ledger": "<b>100%</b> replay fidelity · tamper detected",
                 "forge-inference": "<b>9.2×</b> lower latency via continuous batching",
                 "skillbridge-mcp": "<b>2×</b> lower cross-model variance",
@@ -550,6 +552,7 @@ seeded experiments, measured results, and honest conclusions. No demos.
 No hand-waving.</p>
 <a class="btn" href="#orchestration">Explore the systems</a>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
+<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — six systems, one import.</span></div>
 <div class="stats">
 <div><b>6</b><span>implemented systems</span></div>
 <div><b>3</b><span>categories</span></div>

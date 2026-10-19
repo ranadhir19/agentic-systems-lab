@@ -28,7 +28,7 @@ flowchart TB
     C --> S
 ```
 
-**Simulator model** (`src/simulator.py`): time advances in iterations; each
+**Simulator model** (agentic_systems/forge/simulator.py`): time advances in iterations; each
 iteration every running request generates one token at cost
 `t_iter = T0 + K·batch_tokens` (T0 = 10 ms, K = 0.004 ms/token). The KV
 cache holds 8,192 tokens; a request occupies `prompt_len + generated_so_far`.

@@ -42,20 +42,20 @@ flowchart TB
     PLAN[Decomposition planner] -.->|scores candidates| M
 ```
 
-**Vertical layer** (`src/orchestrators.py`): the meta-orchestrator decomposes a
+**Vertical layer** (`agentic_systems/meridian/orchestrators.py`): the meta-orchestrator decomposes a
 task into per-domain subtasks; each domain orchestrator executes its
 subtasks with its worker fleet and aggregates.
 
-**Horizontal layer** (`src/blackboard.py`): domain orchestrators publish
+**Horizontal layer** (`agentic_systems/meridian/blackboard.py`): domain orchestrators publish
 intermediate artifacts and request peer artifacts through a typed
 propose/request/commit protocol. Every peer-resolved handoff is an
 *escalation avoided* — the meta-orchestrator never sees it.
 
-**Worker fleet** (`src/agents.py`): 8 simulated workers across 3 domains × 2
+**Worker fleet** (`agentic_systems/meridian/agents.py`): 8 simulated workers across 3 domains × 2
 model tiers (standard/pro). Specialists beat generalists on matched work;
 the pro tier holds quality on hard subtasks at ~3× the cost.
 
-## Decision optimization (`src/optimizer.py`)
+## Decision optimization (`agentic_systems/meridian/optimizer.py`)
 
 Two cooperating pieces:
 
@@ -102,11 +102,11 @@ Full table: [results/results.md](results/results.md).
 
 | Config | Success | Mean quality | Cost/task | Latency/task |
 |---|---|---|---|---|
-| A: single | 80.4% | 0.742 | $0.124 | 8.1s |
-| B: vertical | 70.8% | 0.723 | $0.113 | 6.8s |
-| C: vertical+horizontal | 74.2% | 0.732 | $0.088 | 5.5s |
-| C+: +hand-tuned tiers | 88.8% | 0.779 | $0.168 | 6.5s |
-| **D: meridian (full)** | **89.6%** | **0.791** | **$0.179** | 7.0s |
+| A: single | 83.3% | 0.742 | $0.124 | 8.0s |
+| B: vertical | 74.2% | 0.731 | $0.112 | 6.6s |
+| C: vertical+horizontal | 73.8% | 0.737 | $0.087 | 5.2s |
+| C+: +hand-tuned tiers | 90.8% | 0.782 | $0.169 | 6.4s |
+| **D: meridian (full)** | **90.4%** | **0.797** | **$0.183** | 7.0s |
 
 *(95% CIs in results.md; success = final quality ≥ 0.70; seeded simulation —
 see limitations.)*
@@ -117,9 +117,9 @@ see limitations.)*
    handoffs cut cost and latency — ~175 escalations avoided per 240 tasks —
    but fixed standard-tier routing fails hard subtasks.
 3. **Routing intelligence is the quality engine** (C+ vs C): matching worker
-   tier to subtask difficulty lifts success from 74% to 89%.
+   tier to subtask difficulty lifts success from ~74% to ~91%.
 4. **The optimizer discovers the hand-tuned policy on its own** (D vs C+):
-   89.6% vs 88.8% success with zero hand-tuning — and it keeps adapting
+   90.4% vs 90.8% success with zero hand-tuning — and it keeps adapting
    online (see the learning curve in charts.png), which a fixed rule
    cannot do.
 
@@ -140,6 +140,11 @@ Workers and tasks are simulated with seeded RNG — the benchmark measures
 production model behavior. The scalarized weights (w_q=1.0, w_c=0.6,
 w_l=0.25, success bonus 1.0) encode one operating point; the optimizer
 adapts to whatever weights you set.
+
+Reproducibility note: all randomness uses stable seeds (including
+`zlib.crc32`-based name hashing rather than salted builtin `hash()`), so
+re-running the experiment on any machine reproduces the table above
+exactly — verified across `PYTHONHASHSEED` values.
 
 ## What I'd build next
 

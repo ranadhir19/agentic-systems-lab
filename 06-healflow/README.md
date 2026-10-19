@@ -52,13 +52,13 @@ flowchart TB
     V -->|fail| H[Escalate to human]
 ```
 
-**Diagnosis** (`src/diagnosis.py`): classifies the failure (transient /
+**Diagnosis** (agentic_systems/healflow/diagnosis.py`): classifies the failure (transient /
 persistent outage, schema change, bad intermediate, precondition
 violation), then walks the completed steps newest-first re-verifying
 contracts. The first step whose contract is violated is the *culprit* —
 the repair targets the cause, not the symptom.
 
-**Repair memory** (`src/repair.py`): validated `(failure-signature →
+**Repair memory** (agentic_systems/healflow/repair.py`): validated `(failure-signature →
 repair)` pairs keyed by *failure shape* — `('exception','ToolOutage',first?)`,
 `('postcondition','schema'|'data',first?)` — never by workflow or model, so
 strategies transfer across both. A repair is recorded only after its

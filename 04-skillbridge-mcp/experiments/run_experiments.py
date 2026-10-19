@@ -21,19 +21,16 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.adapters import default_adapters
-from src.capabilities import CapabilityServer
-from src.catalog import build_catalog
-from src.eval import EvalHarness
-from src.policy import PolicyEngine
-from src.runtime import SkillRuntime
-from src.skill import SkillManifest, SkillPackage, Step
+from agentic_systems.skillbridge import (CapabilityServer, EvalHarness,
+                                         PolicyEngine, SkillManifest,
+                                         SkillPackage, SkillRuntime, Step,
+                                         build_catalog, default_adapters)
 
 SKILLS = ["invoice-extractor", "pii-redactor", "sql-generator",
           "code-reviewer", "meeting-summarizer", "rag-answerer"]

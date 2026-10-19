@@ -6,20 +6,20 @@
 |---|---|---|---|---|---|---|
 | invoice-extractor | skillbridge | 100% | 100% | 100% | 100% | 100% | 0.000 |
 | invoice-extractor | raw | 100% | 100% | 100% | 100% | 100% | 0.000 |
-| pii-redactor | skillbridge | 96% | 96% | 75% | 89% | 75% | 0.098 |
-| pii-redactor | raw | 92% | 71% | 62% | 75% | 62% | 0.123 |
-| sql-generator | skillbridge | 100% | 88% | 79% | 89% | 79% | 0.086 |
-| sql-generator | raw | 96% | 83% | 62% | 81% | 62% | 0.137 |
-| code-reviewer | skillbridge | 96% | 100% | 100% | 99% | 96% | 0.020 |
-| code-reviewer | raw | 92% | 92% | 75% | 86% | 75% | 0.079 |
-| meeting-summarizer | skillbridge | 92% | 92% | 96% | 93% | 92% | 0.020 |
-| meeting-summarizer | raw | 88% | 92% | 92% | 90% | 88% | 0.020 |
+| pii-redactor | skillbridge | 96% | 83% | 83% | 88% | 83% | 0.059 |
+| pii-redactor | raw | 100% | 75% | 62% | 79% | 62% | 0.156 |
+| sql-generator | skillbridge | 96% | 92% | 92% | 93% | 92% | 0.020 |
+| sql-generator | raw | 88% | 79% | 58% | 75% | 58% | 0.123 |
+| code-reviewer | skillbridge | 96% | 88% | 92% | 92% | 88% | 0.034 |
+| code-reviewer | raw | 88% | 79% | 75% | 81% | 75% | 0.052 |
+| meeting-summarizer | skillbridge | 92% | 100% | 79% | 90% | 79% | 0.086 |
+| meeting-summarizer | raw | 83% | 96% | 62% | 81% | 62% | 0.137 |
 | rag-answerer | skillbridge | 92% | 100% | 88% | 93% | 88% | 0.052 |
-| rag-answerer | raw | 83% | 83% | 62% | 76% | 62% | 0.098 |
+| rag-answerer | raw | 83% | 92% | 67% | 81% | 67% | 0.104 |
 
-Mean cross-adapter std (skillbridge): 0.046
+Mean cross-adapter std (skillbridge): 0.042
 
-Mean cross-adapter std (raw): 0.076
+Mean cross-adapter std (raw): 0.095
 
 ## Exp 2 — Reuse economics (dev-days)
 

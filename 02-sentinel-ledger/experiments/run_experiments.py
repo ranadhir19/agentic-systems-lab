@@ -17,14 +17,14 @@ import os
 import sys
 import time
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from src.ledger import EvidenceLedger, ReplayEngine
-from src.sim_agent import SimulatedAgent, record_decision
+from agentic_systems.sentinel import EvidenceLedger, ReplayEngine
+from agentic_systems.sentinel import SimulatedAgent, record_decision
 
 N_CLEAN = 600
 N_FAULT = 150

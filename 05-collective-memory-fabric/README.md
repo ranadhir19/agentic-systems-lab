@@ -48,7 +48,7 @@ flowchart TB
     Q --> MCP[MCP resource\ncmf://claims/id]
 ```
 
-**Claim** (`src/memory.py`): `(subject, predicate, value)` plus confidence,
+**Claim** (agentic_systems/memory_fabric/memory.py`): `(subject, predicate, value)` plus confidence,
 evidence as `(agent_id, ts)` pairs, provenance, validity window, version,
 status (`active | superseded | revoked | expired | rejected`), and access
 policy. Nothing is ever deleted — superseded and revoked claims persist as

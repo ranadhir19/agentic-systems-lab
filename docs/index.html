@@ -34,6 +34,10 @@ nav.top .links a:hover{color:var(--text)}
   padding:12px 26px;border-radius:10px;font-size:15px}
 .btn:hover{text-decoration:none;filter:brightness(1.08)}
 .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.install{margin-top:34px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.install code{background:#0e1420;border:1px solid var(--border);border-radius:8px;
+  padding:10px 18px;font-size:15px;color:var(--green)}
+.install span{color:var(--muted);font-size:14px}
 .stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
 .stats div b{font-size:26px;display:block}
 .stats div span{color:var(--muted);font-size:13px}
@@ -91,7 +95,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 </style></head><body>
 <nav class="top"><div class="wrap">
 <a class="brand" href="index.html">Agentic Systems <span>Lab</span></a>
-<div class="links"><a href="index.html#orchestration">Orchestration</a><a href="index.html#trust">Trust, Recovery</a><a href="index.html#performance">Performance</a><a href="https://github.com">GitHub ↗</a></div>
+<div class="links"><a href="index.html#orchestration">Orchestration</a><a href="index.html#trust">Trust, Recovery</a><a href="index.html#performance">Performance</a><a href="https://github.com/ranadhir19/agentic-systems-lab/blob/main/docs/user-guide.md">User Guide ↗</a><a href="https://github.com/ranadhir19/agentic-systems-lab">GitHub ↗</a></div>
 </div></nav>
 <div class="hero"><div class="wrap">
 <div class="kicker">Portfolio · Agentic AI Systems</div>
@@ -102,6 +106,7 @@ seeded experiments, measured results, and honest conclusions. No demos.
 No hand-waving.</p>
 <a class="btn" href="#orchestration">Explore the systems</a>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
+<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — six systems, one import.</span></div>
 <div class="stats">
 <div><b>6</b><span>implemented systems</span></div>
 <div><b>3</b><span>categories</span></div>
@@ -120,7 +125,7 @@ Pick the layer you care about, then drill into any system.</p>
 <div class="card"><div class="tag">01 · Meridian Orchestration</div>
 <h4><a href="meridian-orchestration/index.html">Multi-orchestrator, multi-agent task execution with learned decision optimization</a></h4>
 <p>Complex knowledge work must be decomposed across specialized agents, but a single orchestrator becomes a bottleneck: it serializes decisions, routes every subtask through…</p>
-<div class="metric"><b>89.6%</b> success — learned router matches hand-tuning</div></div>
+<div class="metric"><b>90.4%</b> success — learned router matches hand-tuning</div></div>
 <div class="card"><div class="tag">05 · Collective Memory Fabric</div>
 <h4><a href="collective-memory-fabric/index.html">A model-agnostic collective memory protocol for multi-agent systems</a></h4>
 <p>Heterogeneous agents — different LLMs, tools, frameworks — must share knowledge, learn from each other's experience, and stay consistent over long horizons. An incorrect …</p>

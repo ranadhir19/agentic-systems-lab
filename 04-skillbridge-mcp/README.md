@@ -31,14 +31,14 @@ evaluation harness measures how consistently.
 
 ## Components
 
-- `src/skill.py` — provider-neutral skill definition: manifest, instruction template, capability-referencing workflow, executable eval cases.
-- `src/registry.py` — versioned registry with exact / caret (`^1.2.0`) / latest resolution and deprecation semantics.
-- `src/capabilities.py` — MCP-style capability broker binding capability names to server implementations; a skill only runs when every requirement resolves.
-- `src/adapters.py` — model adapters translating portable tool steps into provider conventions (`function_call_json`, `xml_tool_use`, `plain_json`), each with a quality/cost profile.
-- `src/policy.py` — governance: approved-tools allowlist, high-sensitivity approval gate, deprecated-version refusal. Denials are returned, not thrown, so they can be counted.
-- `src/runtime.py` — executes skills through resolve → govern → bind → execute, emitting a per-step audit log that records the translated call.
-- `src/eval.py` — cross-model harness: per-adapter pass rates, cross-adapter std dev, worst-adapter portability score.
-- `src/catalog.py` — 6 sample skills, deterministic tool servers, transforms with adapter-modulated corruptors, 132 executable eval cases.
+- agentic_systems/skillbridge/skill.py` — provider-neutral skill definition: manifest, instruction template, capability-referencing workflow, executable eval cases.
+- agentic_systems/skillbridge/registry.py` — versioned registry with exact / caret (`^1.2.0`) / latest resolution and deprecation semantics.
+- agentic_systems/skillbridge/capabilities.py` — MCP-style capability broker binding capability names to server implementations; a skill only runs when every requirement resolves.
+- agentic_systems/skillbridge/adapters.py` — model adapters translating portable tool steps into provider conventions (`function_call_json`, `xml_tool_use`, `plain_json`), each with a quality/cost profile.
+- agentic_systems/skillbridge/policy.py` — governance: approved-tools allowlist, high-sensitivity approval gate, deprecated-version refusal. Denials are returned, not thrown, so they can be counted.
+- agentic_systems/skillbridge/runtime.py` — executes skills through resolve → govern → bind → execute, emitting a per-step audit log that records the translated call.
+- agentic_systems/skillbridge/eval.py` — cross-model harness: per-adapter pass rates, cross-adapter std dev, worst-adapter portability score.
+- agentic_systems/skillbridge/catalog.py` — 6 sample skills, deterministic tool servers, transforms with adapter-modulated corruptors, 132 executable eval cases.
 
 ## The effective-quality model (documented assumption)
 
@@ -71,18 +71,18 @@ Same skills, same 132 inputs; only the adapter (and mode) changes. Adapters:
 |---|---|---|---|---|---|---|---|
 | invoice-extractor | skillbridge | 100% | 100% | 100% | 100% | 100% | 0.000 |
 | invoice-extractor | raw | 100% | 100% | 100% | 100% | 100% | 0.000 |
-| pii-redactor | skillbridge | 92% | 92% | 79% | 88% | 79% | 0.059 |
-| pii-redactor | raw | 88% | 88% | 54% | 76% | 54% | 0.157 |
-| sql-generator | skillbridge | 100% | 100% | 79% | 93% | 79% | 0.098 |
-| sql-generator | raw | 100% | 96% | 67% | 88% | 67% | 0.148 |
-| code-reviewer | skillbridge | 100% | 96% | 88% | 94% | 88% | 0.052 |
-| code-reviewer | raw | 96% | 88% | 71% | 85% | 71% | 0.104 |
-| meeting-summarizer | skillbridge | 96% | 96% | 92% | 94% | 92% | 0.020 |
-| meeting-summarizer | raw | 83% | 92% | 79% | 85% | 79% | 0.052 |
-| rag-answerer | skillbridge | 100% | 83% | 96% | 93% | 83% | 0.071 |
-| rag-answerer | raw | 88% | 79% | 54% | 74% | 54% | 0.142 |
+| pii-redactor | skillbridge | 96% | 83% | 83% | 88% | 83% | 0.059 |
+| pii-redactor | raw | 100% | 75% | 62% | 79% | 62% | 0.156 |
+| sql-generator | skillbridge | 96% | 92% | 92% | 93% | 92% | 0.020 |
+| sql-generator | raw | 88% | 79% | 58% | 75% | 58% | 0.123 |
+| code-reviewer | skillbridge | 96% | 88% | 92% | 92% | 88% | 0.034 |
+| code-reviewer | raw | 88% | 79% | 75% | 81% | 75% | 0.052 |
+| meeting-summarizer | skillbridge | 92% | 100% | 79% | 90% | 79% | 0.086 |
+| meeting-summarizer | raw | 83% | 96% | 62% | 81% | 62% | 0.137 |
+| rag-answerer | skillbridge | 92% | 100% | 88% | 93% | 88% | 0.052 |
+| rag-answerer | raw | 83% | 92% | 67% | 81% | 67% | 0.104 |
 
-Mean cross-adapter std: **0.050 (SkillBridge) vs 0.100 (raw)** — halved.
+Mean cross-adapter std: **0.042 (SkillBridge) vs 0.095 (raw)** — more than halved.
 
 ### Exp 2 — Reuse economics (analytical model, dev-days)
 
@@ -118,8 +118,8 @@ Full tables: [results/results.md](results/results.md).
 
 ## Results & conclusions
 
-1. **Standardization halves cross-provider variance** (mean std 0.050 vs 0.100) and lifts worst-adapter pass rates substantially — e.g. pii-redactor on local-style goes 54% → 79%, rag-answerer 54% → 96%.
-2. **It damps but does not eliminate provider differences**: the weakest adapter still trails on code-heavy skills (sql-generator 79%, code-reviewer 88% vs 100% on frontier adapters). A skill framework is not a model upgrade.
+1. **Standardization more than halves cross-provider variance** (mean std 0.042 vs 0.095) and lifts worst-adapter pass rates substantially — e.g. pii-redactor on local-style goes 62% → 83%, rag-answerer 67% → 88%.
+2. **It damps but does not eliminate provider differences**: the weakest adapter still trails on code-heavy skills (sql-generator 92%, code-reviewer 88% vs ~100% on frontier adapters). A skill framework is not a model upgrade.
 3. **Deterministic tool steps are portable by construction**: invoice-extractor passes 100% on every adapter in both modes (0.000 std) — the framework's value concentrates in model-reasoning steps, which is exactly where the variance lives.
 4. **Economics favor SkillBridge from the second model on**: it costs 23 extra dev-days for a single model, then saves 69+ days per additional model (345 days at 5 models under the stated model).
 5. **Governance is airtight in the test battery**: 3/3 adversarial runs denied with specific reasons, 20/20 clean runs allowed — zero false positives.
@@ -139,6 +139,10 @@ Requires: Python 3.10+, `matplotlib`.
 - Adapters are simulated quality/cost profiles, not live provider APIs; the variance-reduction magnitudes depend on the documented damping assumption.
 - Capability servers are in-process; production needs real MCP servers over the network with authentication.
 - The corruption model is synthetic (one corruptor per transform); real model failure modes are more varied.
+
+Reproducibility note: all randomness uses stable seeds (SHA-256-based name
+hashing rather than salted builtin `hash()`), so re-running the experiment on
+any machine reproduces the tables above exactly.
 
 ## What I'd build next
 
