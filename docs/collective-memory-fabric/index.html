@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Collective Memory Fabric — Agentic Systems Lab</title>
+<style>
+:root{
+  --bg:#0b0e14; --panel:#111724; --panel2:#0e1420; --border:#22304a;
+  --text:#e8ebf2; --muted:#98a2b8; --faint:#6b7690;
+  --blue:#6ea8fe; --green:#7ee2a8; --amber:#f0b35e; --red:#f08787;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;font-size:16px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav.top .wrap{display:flex;align-items:center;gap:28px;height:60px}
+.brand{font-weight:700;font-size:17px;color:var(--text);letter-spacing:.2px}
+.brand span{color:var(--blue)}
+nav.top .links{margin-left:auto;display:flex;gap:20px;font-size:14px}
+nav.top .links a{color:var(--muted)}
+nav.top .links a:hover{color:var(--text)}
+.hero{padding:84px 0 60px;text-align:left;
+  background:radial-gradient(900px 380px at 20% 0%,rgba(110,168,254,.12),transparent 60%)}
+.hero .kicker{color:var(--blue);font-size:13px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:46px;line-height:1.12;margin:0 0 20px;letter-spacing:-.5px;max-width:820px}
+.hero p.sub{color:var(--muted);font-size:18px;max-width:720px;margin:0 0 34px}
+.btn{display:inline-block;background:var(--blue);color:#0b0e14;font-weight:700;
+  padding:12px 26px;border-radius:10px;font-size:15px}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);margin-left:12px}
+.stats{display:flex;gap:36px;margin-top:44px;flex-wrap:wrap}
+.stats div b{font-size:26px;display:block}
+.stats div span{color:var(--muted);font-size:13px}
+section{padding:56px 0}
+h2.sec{font-size:28px;margin:0 0 8px;letter-spacing:-.3px}
+p.lead{color:var(--muted);max-width:760px;margin:0 0 30px}
+.cat{border:1px solid var(--border);border-radius:var(--radius);padding:28px;
+  margin-bottom:28px;background:var(--panel)}
+.cat h3{margin:0 0 4px;font-size:21px}
+.cat h3 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px}
+.cat p.desc{color:var(--muted);margin:0 0 20px;max-width:720px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.hero h1{font-size:34px}}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;
+  padding:22px;display:flex;flex-direction:column}
+.card h4{margin:0 0 6px;font-size:18px}
+.card h4 a{color:var(--text)}
+.card .tag{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
+.card p{color:var(--muted);font-size:14.5px;margin:0 0 16px;flex:1}
+.card .metric{font-size:14px;color:var(--text);border-top:1px solid var(--border);padding-top:12px}
+.card .metric b{color:var(--green)}
+.proj-hero{padding:56px 0 30px}
+.proj-hero .kicker{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.proj-hero h1{font-size:38px;margin:0 0 10px;letter-spacing:-.4px}
+.proj-hero p.tagline{color:var(--muted);font-size:18px;margin:0 0 8px}
+.crumb{font-size:13px;color:var(--faint);margin-bottom:22px}
+.crumb a{color:var(--faint)}
+.block{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;margin-bottom:22px}
+.block h2{font-size:20px;margin:0 0 12px}
+.block h2 .n{display:inline-block;width:28px;height:28px;border-radius:8px;background:var(--blue);
+  color:#0b0e14;font-size:15px;text-align:center;line-height:28px;margin-right:10px;font-weight:800}
+.block p{margin:0 0 12px;color:#c9d1e2}
+.block p:last-child{margin-bottom:0}
+.block ul{margin:8px 0 0;padding-left:20px;color:#c9d1e2}
+.block li{margin-bottom:8px}
+.diagram{background:#0d1320;border:1px solid var(--border);border-radius:12px;
+  padding:18px;overflow-x:auto;margin:6px 0 4px}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+.caption{font-size:13px;color:var(--faint);text-align:center;margin-top:8px}
+table.res{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+table.res th,table.res td{border:1px solid var(--border);padding:9px 12px;text-align:left}
+table.res th{background:var(--panel2);color:var(--muted);font-weight:600}
+.hl{color:var(--green);font-weight:700}
+img.chart{width:100%;border-radius:10px;border:1px solid var(--border);margin-top:10px}
+code.tree{background:#0d1320;border:1px solid var(--border);border-radius:10px;
+  display:block;padding:16px 18px;font-size:13.5px;color:#c9d1e2;overflow-x:auto;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre}
+.pagenav{display:flex;justify-content:space-between;margin:40px 0 60px;gap:16px}
+.pagenav a{border:1px solid var(--border);border-radius:10px;padding:14px 20px;
+  color:var(--text);font-size:14px;background:var(--panel)}
+.pagenav a small{display:block;color:var(--faint);font-size:12px}
+footer{border-top:1px solid var(--border);padding:34px 0 48px;color:var(--faint);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style></head><body>
+<nav class="top"><div class="wrap">
+<a class="brand" href="../index.html">Agentic Systems <span>Lab</span></a>
+<div class="links"><a href="../index.html#orchestration">Orchestration</a><a href="../index.html#trust">Trust, Recovery</a><a href="../index.html#performance">Performance</a><a href="https://github.com">GitHub ↗</a></div>
+</div></nav>
+<div class="wrap"><div class="proj-hero">
+<div class="crumb"><a href="../index.html">Lab</a> / <a href="../index.html#orchestration">Orchestration & Collective Intelligence</a> / 05</div>
+<div class="kicker" style="color:#6ea8fe">Orchestration & Collective Intelligence</div>
+<h1>Collective Memory Fabric</h1>
+<p class="tagline">A model-agnostic collective memory protocol for multi-agent systems</p>
+</div>
+<div class="block"><h2><span class="n">1</span>The problem</h2><p>Heterogeneous agents — different LLMs, tools, frameworks — must share knowledge, learn from each other's experience, and stay consistent over long horizons. An incorrect inference from one agent propagates; conflicting observations and stale facts compound.</p></div>
+<div class="block"><h2><span class="n">2</span>The current gap</h2><p>Shared databases, vector retrieval, and knowledge graphs store text but don't govern it: nothing checks that a contribution is <i>trustworthy, consistent, current, or appropriate</i> for every recipient. Naive 'wisdom of the crowd' (majority vote) is Sybil-vulnerable — one loud agent out-shouts many quiet ones.</p></div>
+<div class="block"><h2><span class="n">3</span>How the solution addresses it</h2><p>CMF treats memory as versioned <b>claims</b> (subject·predicate·value + evidence + provenance + validity window + confidence + access policy) with <b>admission gates</b>, <b>semantic conflict detection</b>, and <b>quorum reconciliation</b>: <i>score = confidence × recency × (1 + 0.25 × distinct agents)</i> — counting <b>independent sources, not raw claims</b>. Expiry, correction, and quorum revocation complete the lifecycle; claims serialize as MCP resources.</p></div>
+<div class="block"><h2><span class="n">4</span>Architecture</h2>
+<div class="diagram"><svg viewBox="0 0 730 390" width="730" height="390" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#8fa2c8"/>
+  </marker>
+  <marker id="arrb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#6ea8fe"/>
+  </marker>
+  <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#7ee2a8"/>
+  </marker>
+</defs>
+
+<rect x="20" y="30" width="130" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="85.0" y="55.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">Agent α</text><text x="85.0" y="72.0" text-anchor="middle" fill="#98a2b8" font-size="11">0.95 accurate</text>
+<line x1="150" y1="57" x2="196" y2="110" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="20" y="100" width="130" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="85.0" y="125.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">Agent β</text><text x="85.0" y="142.0" text-anchor="middle" fill="#98a2b8" font-size="11">0.85 accurate</text>
+<line x1="150" y1="127" x2="196" y2="110" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="20" y="170" width="130" height="54" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="85.0" y="195.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">Agent γ</text><text x="85.0" y="212.0" text-anchor="middle" fill="#98a2b8" font-size="11">0.72 accurate</text>
+<line x1="150" y1="197" x2="196" y2="110" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="200" y="80" width="150" height="60" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="275.0" y="108.0" text-anchor="middle" fill="#e8ebf2" font-size="13" font-weight="600">Admission gate</text><text x="275.0" y="125.0" text-anchor="middle" fill="#98a2b8" font-size="11">evidence + confidence</text>
+<rect x="390" y="80" width="150" height="60" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="465.0" y="108.0" text-anchor="middle" fill="#e8ebf2" font-size="13" font-weight="600">Conflict detection</text><text x="465.0" y="125.0" text-anchor="middle" fill="#98a2b8" font-size="11">same subject·predicate</text>
+<line x1="350" y1="110" x2="388" y2="110" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="200" y="200" width="340" height="64" rx="9" fill="#1b2340" stroke="#6ea8fe" stroke-width="1.5"/><text x="370.0" y="230.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">Reconciliation</text><text x="370.0" y="247.0" text-anchor="middle" fill="#98a2b8" font-size="11">score = confidence × recency × (1 + 0.25 × distinct agents)</text>
+<line x1="465" y1="140" x2="370" y2="198" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<line x1="275" y1="140" x2="275" y2="198" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="200" y="304" width="160" height="56" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="280.0" y="330.0" text-anchor="middle" fill="#e8ebf2" font-size="13" font-weight="600">Claim store</text><text x="280.0" y="347.0" text-anchor="middle" fill="#98a2b8" font-size="11">active versions</text>
+<rect x="380" y="304" width="160" height="56" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="460.0" y="330.0" text-anchor="middle" fill="#e8ebf2" font-size="12" font-weight="600">Tombstones</text><text x="460.0" y="347.0" text-anchor="middle" fill="#98a2b8" font-size="11">superseded · revoked</text>
+<line x1="320" y1="264" x2="280" y2="302" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<line x1="420" y1="264" x2="460" y2="302" stroke="#8fa2c8" stroke-width="1.6" marker-end="url(#arr)"/>
+<rect x="580" y="190" width="130" height="90" rx="9" fill="#141c2e" stroke="#3b4d75" stroke-width="1.5"/><text x="645.0" y="233.0" text-anchor="middle" fill="#e8ebf2" font-size="13" font-weight="600">Query / MCP</text><text x="645.0" y="250.0" text-anchor="middle" fill="#98a2b8" font-size="11">cmf://claims/…</text>
+<line x1="540" y1="232" x2="578" y2="232" stroke="#7ee2a8" stroke-width="1.6" marker-end="url(#arrg)"/>
+<text x="645" y="300" text-anchor="middle" fill="#f08787" font-size="12">one loud agent</text>
+<text x="645" y="318" text-anchor="middle" fill="#f08787" font-size="12">cannot outvote many</text></svg></div>
+<div class="caption">Blueprint of the Collective Memory Fabric architecture. See the repo for the full implementation.</div></div>
+<div class="block"><h2><span class="n">5</span>Results</h2>
+
+<table class="res"><tr><th>System</th><th>Mean success</th><th>During attack</th><th>Targeted wrong rate</th></tr>
+<tr><td>independent (no sharing)</td><td>78.7%</td><td>77.9%</td><td>24.3%</td></tr>
+<tr><td>vector-db (last-write-wins)</td><td>80.2%</td><td>57.9%</td><td>66.0%</td></tr>
+<tr><td>provenance (majority vote)</td><td>84.0%</td><td>50.7%</td><td><b>86.0%</b></td></tr>
+<tr><td><b>CMF (full fabric)</b></td><td><b class="hl">94.7%</b></td><td><b class="hl">98.0%</b></td><td><b class="hl">0.0%</b></td></tr></table>
+<p>200 ticks, 8 agents × 3 model families, misinformation injected ticks 80–120 (5-seed average). Majority vote performs <i>worst</i> under attack — the attacker's 2 claims/tick outvote ~1.6 honest observations. CMF holds <b>98% success during the attack</b>. Cross-model transfer: the weakest family (γ, 0.72) rises from 69.1% alone to <b>94.5%</b> on the fabric.</p>
+<img class="chart" src="../assets/charts/collective-memory-fabric.png" alt="Collective Memory Fabric experiment charts">
+<div class="caption">Generated by <code>experiments/run_experiments.py</code> — re-running reproduces these exactly.</div></div>
+<div class="block"><h2><span class="n">6</span>Insights</h2><ul><li><b>Count sources, not claims.</b> The distinct-agent quorum is the entire defense: one confident liar can never outvote independent observers.</li><li><b>Majority vote is Sybil-vulnerable.</b> Frequency-based consensus amplifies attackers; source-based consensus resists them.</li><li><b>Governance is what makes sharing safe for weak models.</b> The least accurate family gains the most (+25pp) — the fabric, not the model, carries reliability.</li><li><b>Robustness has a bounded price:</b> fact flips converge in ~5–8 ticks (the cost of demanding corroboration), ~0.2 ms/tick for reconciliation.</li></ul></div>
+<div class="block"><h2><span class="n">7</span>Implementation</h2>
+<code class="tree">05-collective-memory-fabric/
+  src/
+    memory.py         # Claim, MemoryFabric: admit/merge/reconcile/query/revoke
+    baselines.py      # independent, last-write-wins, majority-vote
+    simulation.py     # 8 agents, 10 flipping facts, injected misinformation
+  experiments/run_experiments.py   # 4 systems x 5 seeds</code>
+<p style="margin-top:14px">Full source, tests, and experiment code: <a href="https://github.com">05-collective-memory-fabric/</a> ·
+Run: <code>cd 05-collective-memory-fabric && python3 experiments/run_experiments.py</code></p></div>
+<div class="pagenav">
+<a href="../skillbridge-mcp/index.html"><small>← Previous</small>04 · SkillBridge MCP</a>
+<a href="../healflow/index.html" style="text-align:right"><small>Next →</small>06 · HealFlow</a>
+</div></div>
+
+<footer><div class="wrap">
+<div>Agentic Systems Lab — six original agentic-AI systems with implementations,<br>seeded experiments, and measured results.</div>
+<div>Built by Ranadhir Ghosh · MIT License</div>
+</div></footer></body></html>
