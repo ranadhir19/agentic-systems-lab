@@ -34,7 +34,18 @@ line is exactly `HARNESS GREEN` or `HARNESS RED: <stages>`.
    linked from the root `README.md` and each per-system `README.md`
    resolves to a real file; every system has `experiments/run_experiments.py`,
    `results/results.md`, and `results/charts.png`; `examples/` holds one
-   quickstart per system with matching numbering.
+   quickstart per system with matching numbering. This stage also validates
+   **deployment configs wherever they exist** (`render.yaml`, `vercel.json`,
+   `Procfile`, `Dockerfile`, `docker-compose*.yml`, `.github/workflows/*`):
+   the file must parse (YAML/JSON), and platform-required keys and values
+   must be schema-valid — e.g. for Render, each service needs `type` and
+   `name`, `type` must be a real Render service type, and a static site
+   must be `type: web` with `env: static` (there is no `static` service
+   type). A broken deploy config fails the stage. **This repo currently
+   has no deployment configs present — nothing to validate** (no
+   render.yaml, vercel.json, Procfile, Dockerfile, docker-compose file, or
+   GitHub Actions workflow); the check runs anyway and will enforce the
+   rules if a config is ever added.
 
 ## What the harness does NOT cover (honest scope)
 

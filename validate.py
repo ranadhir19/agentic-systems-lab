@@ -20,6 +20,12 @@ Stages, in order:
                         from the root README and each per-system README
                         exists; every system has its experiment runner,
                         results files, README, and a quickstart example.
+                        Also validates deployment configs wherever they
+                        exist (render.yaml, vercel.json, Procfile,
+                        Dockerfile, docker-compose*.yml,
+                        .github/workflows/*): syntax parses and
+                        platform-required keys/values are schema-valid.
+                        A broken deploy config fails this stage.
 
 Final line is exactly "HARNESS GREEN" or "HARNESS RED: <stage, ...>".
 See VALIDATION.md for the honest scope of what this does NOT cover.
@@ -210,13 +216,162 @@ def stage_docs_consistency() -> bool:
             if s[:2] != q[:2]:
                 problems.append(f"quickstart numbering mismatch: {s} vs {q}")
 
+    # 4d. Deployment-config validation (wherever such files exist).
+    deploy_checked = validate_deploy_configs(problems)
+
     if problems:
         for p in problems:
             print(f"  {p}")
         return report(stage, False, f"{len(problems)} problem(s), {checked} links checked")
     return report(stage, True,
                   f"{checked} README links resolve; {len(systems)} systems have "
-                  "runner + results + matching quickstart")
+                  f"runner + results + matching quickstart; {deploy_checked}")
+
+
+# ------------------------------------------------------- deploy configs
+RENDER_SERVICE_TYPES = {"web", "worker", "cron", "pserv", "keyvalue"}
+RENDER_ENVS = {"docker", "elixir", "go", "node", "python", "ruby", "rust",
+               "static", "image"}
+
+
+def _load_yaml(path: str, problems: list[str]):
+    try:
+        import yaml
+    except ImportError:
+        problems.append(f"{path}: PyYAML unavailable, cannot validate YAML")
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except Exception as exc:
+        problems.append(f"{path}: YAML does not parse: {exc}")
+        return None
+
+
+def validate_deploy_configs(problems: list[str]) -> str:
+    """Validate deployment configs if present; a broken one appends a
+    problem (=> stage FAIL). Returns a short summary for the PASS line."""
+    found: list[str] = []
+
+    def rel(p: str) -> str:
+        return os.path.relpath(p, REPO)
+
+    # Render blueprint (render.yaml / render.yml, repo root).
+    for name in ("render.yaml", "render.yml"):
+        p = os.path.join(REPO, name)
+        if not os.path.isfile(p):
+            continue
+        found.append(name)
+        doc = _load_yaml(p, problems)
+        if doc is None:
+            continue
+        if not isinstance(doc, dict) or not isinstance(doc.get("services"), list) \
+                or not doc["services"]:
+            problems.append(f"{name}: top level must define a non-empty 'services' list")
+            continue
+        for svc in doc["services"]:
+            if not isinstance(svc, dict):
+                problems.append(f"{name}: each service must be a mapping")
+                continue
+            for key in ("type", "name"):
+                if key not in svc:
+                    problems.append(f"{name}: service missing required key '{key}'")
+            stype = svc.get("type")
+            if stype is not None and stype not in RENDER_SERVICE_TYPES:
+                problems.append(
+                    f"{name}: service '{svc.get('name')}': invalid type {stype!r} "
+                    f"(valid: {sorted(RENDER_SERVICE_TYPES)}); a static site is "
+                    "type: web with env: static — there is no 'static' type")
+            env = svc.get("env")
+            if env is not None and env not in RENDER_ENVS:
+                problems.append(
+                    f"{name}: service '{svc.get('name')}': invalid env {env!r} "
+                    f"(valid: {sorted(RENDER_ENVS)})")
+            if env == "static" and stype != "web":
+                problems.append(
+                    f"{name}: service '{svc.get('name')}': env: static requires "
+                    "type: web")
+
+    # Vercel (vercel.json, repo root).
+    p = os.path.join(REPO, "vercel.json")
+    if os.path.isfile(p):
+        found.append("vercel.json")
+        try:
+            doc = json.load(open(p, encoding="utf-8"))
+            if not isinstance(doc, dict):
+                problems.append("vercel.json: top level must be a JSON object")
+        except Exception as exc:
+            problems.append(f"vercel.json: JSON does not parse: {exc}")
+
+    # Procfile: every non-empty, non-comment line is 'name: command'.
+    p = os.path.join(REPO, "Procfile")
+    if os.path.isfile(p):
+        found.append("Procfile")
+        for i, line in enumerate(open(p, encoding="utf-8"), 1):
+            line = line.strip()
+            if line and not line.startswith("#") \
+                    and not re.fullmatch(r"[A-Za-z0-9_-]+:\s*\S.*", line):
+                problems.append(f"Procfile:{i}: expected 'name: command', got {line!r}")
+
+    # Dockerfile*: must contain a FROM instruction.
+    for root, dirs, files in os.walk(REPO):
+        dirs[:] = [d for d in dirs if d not in {".git", "__pycache__"}]
+        for fn in files:
+            if fn == "Dockerfile" or fn.startswith("Dockerfile."):
+                dp = os.path.join(root, fn)
+                found.append(rel(dp))
+                body = [ln.strip() for ln in open(dp, encoding="utf-8")
+                        if ln.strip() and not ln.strip().startswith("#")]
+                if not any(ln.upper().startswith(("FROM ", "ARG ")) for ln in body[:1]) \
+                        or not any(ln.upper().startswith("FROM ") for ln in body):
+                    problems.append(f"{rel(dp)}: no FROM instruction found")
+
+    # docker-compose*.yml/yaml: parses; 'services' mapping; each service
+    # defines image or build.
+    for root, dirs, files in os.walk(REPO):
+        dirs[:] = [d for d in dirs if d not in {".git", "__pycache__"}]
+        for fn in files:
+            if re.fullmatch(r"docker-compose.*\.ya?ml", fn):
+                dp = os.path.join(root, fn)
+                found.append(rel(dp))
+                doc = _load_yaml(dp, problems)
+                if isinstance(doc, dict):
+                    svcs = doc.get("services")
+                    if not isinstance(svcs, dict) or not svcs:
+                        problems.append(f"{rel(dp)}: 'services' must be a non-empty mapping")
+                    else:
+                        for sname, svc in svcs.items():
+                            if isinstance(svc, dict) and "image" not in svc and "build" not in svc:
+                                problems.append(
+                                    f"{rel(dp)}: service '{sname}' has neither 'image' nor 'build'")
+
+    # GitHub Actions workflows: parse; 'on' + 'jobs' with runs-on + steps.
+    wf_dir = os.path.join(REPO, ".github", "workflows")
+    if os.path.isdir(wf_dir):
+        for fn in sorted(os.listdir(wf_dir)):
+            if fn.endswith((".yml", ".yaml")):
+                wp = os.path.join(wf_dir, fn)
+                found.append(rel(wp))
+                doc = _load_yaml(wp, problems)
+                if isinstance(doc, dict):
+                    # PyYAML (YAML 1.1) parses the key `on` as boolean True.
+                    if "on" not in doc and True not in doc:
+                        problems.append(f"{rel(wp)}: missing 'on' trigger")
+                    jobs = doc.get("jobs")
+                    if not isinstance(jobs, dict) or not jobs:
+                        problems.append(f"{rel(wp)}: 'jobs' must be a non-empty mapping")
+                    else:
+                        for jname, job in jobs.items():
+                            if not isinstance(job, dict) or "runs-on" not in job \
+                                    or not isinstance(job.get("steps"), list):
+                                problems.append(
+                                    f"{rel(wp)}: job '{jname}' needs 'runs-on' and a 'steps' list")
+
+    if not found:
+        print("  deploy configs: none present — nothing to validate")
+        return "no deployment configs present"
+    print(f"  deploy configs validated: {', '.join(found)}")
+    return f"deploy configs OK ({len(found)}: {', '.join(found)})"
 
 
 STAGES = [
