@@ -8,6 +8,19 @@ not on prompt tricks.
 
 Install it as a library, learn from it as a textbook, run it as a lab.
 
+## Watch it built
+
+The systems in this lab are built and measured on camera at **[The Architect's AI Workshop](https://www.youtube.com/@ArchitectsAIWorkshop)** — *first principles on the whiteboard, built live in the editor, measured honestly.* Browse the episodes: [youtube.com/@ArchitectsAIWorkshop/videos](https://www.youtube.com/@ArchitectsAIWorkshop/videos)
+
+Episodes from this repo:
+
+- [We Deleted the Data and Kept the Answers (27:1)](https://youtu.be/jdaSMl9jPcE) — semantic-fabric
+- [One Agent Lied 80 Times — and the Majority Vote Believed It](https://youtu.be/YHs0IMfe_Xo) — collective-memory-fabric
+- [Charged 3 Times for an Order That Never Shipped](https://youtu.be/ahS_m5ulkUc) — healflow
+- [0.805 to 0.035: Why Agent Success Collapses by Step 80](https://youtu.be/6bxC2tuBbIc) — horizon-scaling
+- [The Quietest Payload Beat Three Defenses — Only Provenance Stopped It](https://youtu.be/rO8GOt8Cdcg) — injection-containment
+- [The Model That Can't Get Better](https://youtu.be/CEO8OSDmlGk) — sre-learning
+
 ## Install
 
 ```bash
