@@ -55,6 +55,9 @@ there. The full **[User Guide](docs/user-guide.md)** explains the *why*
 behind each system: the problem, the gap in existing approaches, the core
 idea, when to reach for it, and the measured results.
 
+Prefer reading in the browser? The guide is also published as a site:
+**[ranadhir19.github.io/agentic-systems-lab](https://ranadhir19.github.io/agentic-systems-lab/)**.
+
 ## Projects
 
 | # | Project | Package | What it is | Key result |
