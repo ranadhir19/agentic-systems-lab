@@ -1277,7 +1277,7 @@ seeded experiments, measured results, and honest conclusions. No demos.
 No hand-waving.</p>
 <a class="btn" href="#orchestration">Explore the systems</a>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
-<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — sixteen systems, one import.</span></div>
+<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — twenty-one systems, one import.</span></div>
 <div class="stats">
 <div><b>21</b><span>implemented systems</span></div>
 <div><b>4</b><span>categories</span></div>
