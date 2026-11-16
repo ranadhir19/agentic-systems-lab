@@ -1,3 +1,5 @@
+![agentic-systems-lab — Twenty-one agentic-AI systems](banner.svg)
+
 # Agentic Systems Lab
 
 Twenty-one original, implemented agentic-AI systems — each with architecture,

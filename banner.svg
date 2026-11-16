@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360" role="img" aria-label="agentic-systems-lab">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1220"/><stop offset="100%" stop-color="#14263F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="360" fill="url(#bg)"/>
+  <rect x="64" y="72" width="72" height="6" fill="#F5B544"/>
+  <text x="64" y="155" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="700" fill="#FFFFFF">agentic-systems-lab</text>
+  <text x="64" y="215" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="#CBD5E1"><tspan x="64" dy="0">Twenty-one original agentic-AI systems —</tspan><tspan x="64" dy="38">architecture, code, experiments, honest conclusions.</tspan></text>
+  <rect x="64" y="285" width="760" height="4" fill="#2DD4BF"/>
+  
+  <path d="M 1055 300 V 210 M 1055 210 C 1055 160 975 160 955 105 M 1055 210 C 1055 150 1055 130 1055 85 M 1055 210 C 1055 160 1135 160 1155 105" stroke="#2DD4BF" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <circle cx="1055" cy="300" r="14" fill="#F5B544"/>
+  <circle cx="955" cy="95" r="16" fill="none" stroke="#F5B544" stroke-width="6"/>
+  <circle cx="1055" cy="75" r="16" fill="none" stroke="#2DD4BF" stroke-width="6"/>
+  <circle cx="1155" cy="95" r="16" fill="none" stroke="#F5B544" stroke-width="6"/>
+</svg>
