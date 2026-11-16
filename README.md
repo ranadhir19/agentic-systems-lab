@@ -55,9 +55,6 @@ there. The full **[User Guide](docs/user-guide.md)** explains the *why*
 behind each system: the problem, the gap in existing approaches, the core
 idea, when to reach for it, and the measured results.
 
-Prefer reading in the browser? The guide is also published as a site:
-**[ranadhir19.github.io/agentic-systems-lab](https://ranadhir19.github.io/agentic-systems-lab/)**.
-
 ## Projects
 
 | # | Project | Package | What it is | Key result |
@@ -65,7 +62,7 @@ Prefer reading in the browser? The guide is also published as a site:
 | 01 | [meridian-orchestration](01-meridian-orchestration/) | `agentic_systems.meridian` | Multi-orchestrator multi-agent system: vertical hierarchy + horizontal blackboard + online decision optimization (contextual Thompson sampling) | Learned router matches a hand-tuned tiering policy (90.4% vs 90.8% success) with zero hand-tuning |
 | 02 | [sentinel-ledger](02-sentinel-ledger/) | `agentic_systems.sentinel` | Hash-chained evidence ledger + deterministic replay engine for agent decisions | 600/600 exact replays; 100% detection on seed/tool/tamper faults |
 | 03 | [forge-inference](03-forge-inference/) | `agentic_systems.forge` | Discrete-event simulator of LLM inference serving; static vs continuous vs SRPT scheduling | Continuous batching: 9.2× lower mean latency at high load; SRPT cuts mean 34% but starves p99 |
-| 04 | [skillbridge-mcp](04-skillbridge-mcp/) | `agentic_systems.skillbridge` | Model-agnostic framework for reusable AI skills: portable packages, versioned registry, MCP-style capability broker, model adapters, governance, cross-model eval | Cross-model variance more than halved (0.042 vs 0.095); framework pays off from 2+ models |
+| 04 | [skillbridge-mcp](04-skillbridge-mcp/) | `agentic_systems.skillbridge` | Model-agnostic framework for reusable AI skills: portable packages, versioned registry, MCP-style capability broker, model adapters, governance, cross-model consistency checks | Cross-model variance more than halved (0.042 vs 0.095); framework pays off from 2+ models |
 | 05 | [collective-memory-fabric](05-collective-memory-fabric/) | `agentic_systems.memory_fabric` | Governed collective memory protocol: versioned claims, evidence-weighted quorum reconciliation, expiry, revocation | 0% wrong-answer rate under sustained misinformation injection; weakest model family 69% → 95% |
 | 06 | [healflow](06-healflow/) | `agentic_systems.healflow` | Self-healing workflow runtime: contracts, checkpoints, causal diagnosis, smallest-viable repair, verified recovery, repair memory | 6/6 safe outcomes; naive replan triple-charges a payment workflow |
 | 07 | [intent-inference](07-intent-inference/) | `agentic_systems.intent_inference` | Intent classification vs intent inference: TF-IDF/softmax baseline head-to-head against a ChatGPT-style goal-inference pipeline (memory → understanding → goals → planner → orchestrator) | 100% task success vs 45% baseline; 0% → 100% on multi-intent and out-of-catalog |
@@ -82,7 +79,9 @@ Prefer reading in the browser? The guide is also published as a site:
 | 18 | [horizon-scaling](18-horizon-scaling/) | `agentic_systems.horizon_scaling` | Long-horizon reliability decay curves; checkpoints vs hierarchy vs voting vs recovery + cost-per-success | Baseline 0.804 → 0.035 (N=5→80), exponential R²=0.9999; hierarchy 0.740 at N=80 |
 | 19 | [attention-economics](19-attention-economics/) | `agentic_systems.attention_economics` | Human attention as priced resource; 5 escalation policies; trust calibration (over/under-trust indices) | Stakes-adjusted EV wins all regimes; overconfidence costs 6x underconfidence |
 | 20 | [injection-containment](20-injection-containment/) | `agentic_systems.injection_containment` | Prompt-injection propagation across 4-hop delegation chains; 4 containment defenses; semantic mosaic effect | Combined defenses: 0.00 residual attack; mosaic detector catches 1.00 |
-| 21 | [behavioral-regression](21-behavioral-regression/) | `agentic_systems.behavioral_regression` | Frozen 120-task battery; paired tests across model versions; canary 1%→10%; pin/adopt/rollback policy | 4/4 policy decisions match ground truth; 0.00 false positives on benign shifts |
+| 21 | [behavioral-regression](21-behavioral-regression/) | `agentic_systems.behavioral_regression` | Methodology demo — frozen 120-task regression battery; paired tests across model versions; canary 1%→10%; pin/adopt/rollback policy | 4/4 policy decisions match ground truth; 0.00 false positives on benign shifts |
+
+**Where the standalone tools live.** This lab holds research demonstrations, not products — and two of its themes graduate into standalone tools: **runreckon** (github.com/ranadhir19/runreckon), the eval tool, which scores how an agent executed a recorded run; and **evalcrucible** (github.com/ranadhir19/evalcrucible), the grader tool, which validates graders and audits static benchmark suites. System 21 (behavioral regression) and System 04's consistency checks are the in-lab demonstrations behind those themes.
 
 ## Reproducing the benchmarks
 
