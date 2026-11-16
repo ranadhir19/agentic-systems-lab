@@ -1,5 +1,7 @@
 # Behavioral Regression — catch functional drift across model versions
 
+**Scope note.** Behavioral Regression is a research demonstration inside the Agentic Systems Lab — a regression *methodology* exercised on simulated model versions, not a standalone eval product. To evaluate how a real agent executed a recorded run, use runreckon; to validate the graders and task suites themselves, use evalcrucible.
+
 ## Problem
 
 Enterprises pin an agent stack to a model version, the vendor ships a new

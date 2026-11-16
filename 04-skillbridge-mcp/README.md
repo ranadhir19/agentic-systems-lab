@@ -6,7 +6,7 @@ The rapidly evolving AI ecosystem is creating fragmentation in how skills, instr
 
 ## Solution
 
-SkillBridge MCP proposes a unified, model-agnostic framework for defining, discovering, sharing, executing, and governing reusable AI skills across multiple LLMs and agent runtimes. It combines portable skill definitions, MCP-based capability discovery and tool integration, standardized interfaces, model adapters, and a common execution and evaluation layer. Skills can encapsulate domain knowledge, instructions, workflows, and references to approved tools while remaining independent of any particular model provider. A centralized registry, version management, security policies, and cross-model evaluations enable organizations to develop a skill once and deploy it consistently across supported AI platforms, accelerating reuse, improving portability, reducing engineering costs, and minimizing vendor dependency.
+SkillBridge MCP proposes a unified, model-agnostic framework for defining, discovering, sharing, executing, and governing reusable AI skills across multiple LLMs and agent runtimes. It combines portable skill definitions, MCP-based capability discovery and tool integration, standardized interfaces, model adapters, and a common execution layer with built-in cross-model consistency checks. Skills can encapsulate domain knowledge, instructions, workflows, and references to approved tools while remaining independent of any particular model provider. A centralized registry, version management, security policies, and cross-model evaluations enable organizations to develop a skill once and deploy it consistently across supported AI platforms, accelerating reuse, improving portability, reducing engineering costs, and minimizing vendor dependency.
 
 ## Architecture
 
@@ -27,7 +27,7 @@ never provider APIs. At run time the registry resolves the version, the policy
 engine governs the run, the broker binds capabilities to MCP-style servers, and
 the model adapter translates each tool step into the provider's own calling
 convention. The same skill package runs on every supported model; the
-evaluation harness measures how consistently.
+consistency harness measures how consistently.
 
 ## Components
 

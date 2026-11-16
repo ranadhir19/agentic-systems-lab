@@ -667,7 +667,7 @@ dict(
  category="performance", repo="04-skillbridge-mcp", arch=svg_skillbridge,
  problem="Skills, instructions, tools, and workflows are coupled to specific model providers, prompting conventions, and tool-calling interfaces — producing duplicated engineering effort, vendor lock-in, inconsistent behavior, and rising maintenance costs.",
  gap="The Model Context Protocol (MCP) standardizes access to tools and context, but not <i>packaging, executing, governing, or evaluating</i> portable skills across heterogeneous environments. There is no 'develop once, deploy anywhere' layer for skills.",
- solution="SkillBridge defines portable <b>SkillPackages</b> (manifest + provider-neutral instructions + capability-referencing workflows + eval cases), a <b>versioned registry</b>, a <b>policy engine</b> (approved-tools allowlist, high-sensitivity approval gates, deprecation refusal), a <b>capability broker</b> binding to MCP servers, <b>model adapters</b> translating to each provider's calling convention, and a <b>cross-model eval harness</b>.",
+ solution="SkillBridge defines portable <b>SkillPackages</b> (manifest + provider-neutral instructions + capability-referencing workflows + eval cases), a <b>versioned registry</b>, a <b>policy engine</b> (approved-tools allowlist, high-sensitivity approval gates, deprecation refusal), a <b>capability broker</b> binding to MCP servers, <b>model adapters</b> translating to each provider's calling convention, and a <b>cross-model consistency harness</b>.",
  results_table="""
 <table class="res"><tr><th>Skill</th><th>SkillBridge σ</th><th>Per-provider σ</th></tr>
 <tr><td>pii-redactor</td><td>0.059</td><td>0.157</td></tr>
@@ -1277,7 +1277,7 @@ seeded experiments, measured results, and honest conclusions. No demos.
 No hand-waving.</p>
 <a class="btn" href="#orchestration">Explore the systems</a>
 <a class="btn ghost" href="meridian-orchestration/index.html">Start with Meridian →</a>
-<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — twenty-one systems, one import.</span></div>
+<div class="install"><code>pip install agentic-systems-lab</code><span>The full library — sixteen systems, one import.</span></div>
 <div class="stats">
 <div><b>21</b><span>implemented systems</span></div>
 <div><b>4</b><span>categories</span></div>
